@@ -21,6 +21,12 @@ export class UserInOrgController {
     return this.userInOrgService.getUserOrganisations(session.user.id);
   }
 
+  @Get('currentOrg')
+  getCurrentOrganisations(@Session() session: UserSession) {
+    // No guard needed - just requires authentication (via @Session())
+    return this.userInOrgService.getCurrentOrganisation(session);
+  }
+
   @Post('switch')
   async switchOrganisation(
     @Session() session: UserSession,

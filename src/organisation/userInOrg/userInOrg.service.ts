@@ -5,6 +5,13 @@ import { Organisation, OrganisationDocument } from '../schemas/organisation.sche
 import { UserInOrg, UserInOrgDocument } from '../schemas/userInOrg.schema.js';
 import { ObjectId } from 'mongodb';
 import { auth } from '../../config/auth.js';
+import { UserSession } from '@thallesp/nestjs-better-auth';
+
+type ExtendedUserSession = UserSession & {
+  user: UserSession['user'] & {
+    lastAccessedOrg?: string;
+  };
+};
 
 @Injectable()
 export class UserInOrgService {
@@ -49,6 +56,28 @@ export class UserInOrgService {
     });
 
     return result;
+  }
+
+  async getCurrentOrganisation(session: ExtendedUserSession) {
+    const userInOrg = await this.userInOrgModel.findOne({
+      userId: session.user.id,
+      orgId: session.user.lastAccessedOrg,
+      deletedAt: null,
+    }).exec();
+
+    if (!userInOrg) {
+      throw new UnauthorizedException('User is not a member of this organisation');
+    }
+
+    const organisation = await this.organisationModel.findOne({
+      _id: session.user.lastAccessedOrg,
+    }).exec();
+
+    if (!organisation) {
+      throw new NotFoundException('Org not found');
+    }
+
+    return { userInOrg, organisation }
   }
 
   async switchOrganisation(userId: string, orgId: string, req: Request): Promise<string> {
