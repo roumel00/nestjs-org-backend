@@ -112,6 +112,9 @@ NODE_ENV=development
 
 # Development
 DEVELOPER_SECRET=your_dev_secret
+
+# Sentry (Error Tracking)
+SENTRY_DSN=your_sentry_dsn
 ```
 
 ### Running the Application

@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { SentryModule } from '@sentry/nestjs/setup';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ThrottlerModule, minutes } from '@nestjs/throttler';
@@ -9,9 +10,12 @@ import { GuardsModule } from './common/guards/guards.module.js';
 import { auth } from './config/auth.js';
 import { OrganisationModule } from './organisation/organisation.module.js';
 import { UserModule } from './user/user.module.js';
+import { APP_FILTER } from '@nestjs/core';
+import { SentryGlobalFilter } from '@sentry/nestjs/setup';
 
 @Module({
   imports: [
+    SentryModule.forRoot(),
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
@@ -30,6 +34,12 @@ import { UserModule } from './user/user.module.js';
     OrganisationModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: SentryGlobalFilter,
+    },
+  ],
 })
 export class AppModule {}
