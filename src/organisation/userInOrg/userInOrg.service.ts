@@ -65,16 +65,12 @@ export class UserInOrgService {
       deletedAt: null,
     }).exec();
 
-    if (!userInOrg) {
-      throw new UnauthorizedException('User is not a member of this organisation');
-    }
-
     const organisation = await this.organisationModel.findOne({
       _id: session.user.lastAccessedOrg,
     }).exec();
 
-    if (!organisation) {
-      throw new NotFoundException('Org not found');
+    if (!organisation || !userInOrg) {
+      throw new NotFoundException('Current org not found');
     }
 
     return { userInOrg, organisation }
