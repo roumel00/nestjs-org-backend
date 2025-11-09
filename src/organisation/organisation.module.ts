@@ -5,6 +5,7 @@ import { OrganisationService } from './organisation.service.js';
 import { Organisation, OrganisationSchema } from './schemas/organisation.schema.js';
 import { UserInOrg, UserInOrgSchema } from './schemas/userInOrg.schema.js';
 import { InviteModule } from './invite/invite.module.js';
+import { UserInOrgModule } from './userInOrg/userInOrg.module.js';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { InviteModule } from './invite/invite.module.js';
       { name: UserInOrg.name, schema: UserInOrgSchema },
     ]),
     InviteModule,
+    UserInOrgModule,
   ],
   controllers: [OrganisationController],
   providers: [OrganisationService],
