@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserSession } from '@thallesp/nestjs-better-auth';
@@ -29,18 +29,16 @@ export class UserService {
     return { authenticated: !!session };
   }
 
-  async deleteUser(req: Request, session: UserSession, password: string) {
-    const userId = session.user.id;
-    
+  async deleteUser(req: Request, session: UserSession, password: string, secret: string) {    
     const ownerUserInOrgs = await this.userInOrgModel.find({
-      userId: userId,
+      userId: session.user.id,
       role: 'owner'
     }).select('orgId').lean().exec();
 
     const ownerOrgIds = ownerUserInOrgs.map(uio => uio.orgId);
 
     await this.userInOrgModel.deleteMany({
-      userId: userId,
+      userId: session.user.id,
     }).exec();
 
     if (ownerOrgIds.length > 0) {
