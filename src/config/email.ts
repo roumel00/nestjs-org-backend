@@ -10,7 +10,7 @@ export async function sendOtpEmail({
   purpose,
 }: SendOtpEmailParams): Promise<void> {
   const { error } = await resend.emails.send({
-    from: 'verify@' + (process.env.EMAIL_DOMAIN ?? 'notifications.jakl.au'),
+    from: 'verify@' + (process.env.EMAIL_DOMAIN ?? 'notifications.jakl.au'), // TODO: make sure this is your email domain
     to: email,
     subject: subject,
     html: `
