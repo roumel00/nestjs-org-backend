@@ -6,7 +6,7 @@ import { RoleGuard } from '../../common/guards/role.guard.js';
 import { OrgMemberGuard } from '../../common/guards/orgMember.guard.js';
 import { RequiredRole } from '../../common/decorators/requiredRole.decorator.js';
 import { CurrentOrg } from '../decorators/currentOrg.decorator.js';
-import { UserThrottlerGuard } from 'src/common/guards/userThrottler.guard.js';
+import { UserThrottlerGuard } from '../../common/guards/userThrottler.guard.js';
 
 @Controller('organisations/invite')
 export class InviteController {
