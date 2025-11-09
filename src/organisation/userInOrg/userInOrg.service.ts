@@ -70,10 +70,10 @@ export class UserInOrgService {
     }).exec();
 
     if (!organisation || !userInOrg) {
-      throw new NotFoundException('Current org not found');
+      return { currentOrg: null }
     }
 
-    return { userInOrg, organisation }
+    return { currentOrg: { userInOrg, organisation } }
   }
 
   async switchOrganisation(userId: string, orgId: string, req: Request): Promise<string> {
