@@ -10,9 +10,7 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
 
   app.enableCors({
-    origin: [
-      'http://localhost:3050', // frontend domain
-    ],
+    origin: process.env.CORS_ORIGIN?.split(',') || ['http://localhost:3050'],
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'x-org-id'],

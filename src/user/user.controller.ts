@@ -30,7 +30,7 @@ export class UserController {
   }
 
   @Delete('delete')
-  async delete(@Req() req: Request, @Body() body: DeleteUserDto) {
-    return this.userService.deleteUser(req, body.password);
+  async delete(@Req() req: Request, @Session() session: UserSession, @Body() body: DeleteUserDto) {
+    return this.userService.deleteUser(req, session, body.password);
   }
 }

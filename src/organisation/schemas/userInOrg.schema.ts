@@ -14,6 +14,9 @@ export class UserInOrg {
   @Prop({ required: true, default: 'member' })
   role: 'owner' | 'admin' | 'member';
 
+  @Prop({ required: true, default: 'active' })
+  status: 'pending' | 'active';
+
   @Prop({ type: Date, required: false, default: null })
   createdAt: Date | null;
 
