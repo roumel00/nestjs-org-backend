@@ -3,8 +3,8 @@ import { mongodbAdapter } from 'better-auth/adapters/mongodb';
 import { emailOTP } from 'better-auth/plugins';
 import { getDb, mongoClient } from './database.js';
 import { createAuthMiddleware } from 'better-auth/api';
-import { ObjectId } from 'mongodb';
 import { sendOtpEmail } from './email.js';
+import { handleUserSignup } from './signup.js';
 
 const db = await getDb();
 const client = mongoClient();
@@ -68,36 +68,14 @@ export const auth = betterAuth({
         const userId = ctx.context.newSession.user.id;
         const user = ctx.context.newSession.user;
 
-        const organisation = await db.collection('organisation').insertOne({
-          owner: userId,
-          name: `${user.name}'s Organisation`, // Default name
-          timezone: ctx.body?.timezone || 'UTC',
-          address: null,
-          abn: null,
-          licenseNumber: null,
-          phone: null,
-          website: null,
-          billingEmail: null,
-          logo: null,
-          createdAt: new Date(),
-        });
-
-        const orgId = organisation.insertedId;
-
-        await db.collection('userInOrg').insertOne({
-          orgId: orgId,
-          userId: userId,
-          role: 'owner',
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        });
-
-        await db.collection('user').updateOne(
-          { _id: new ObjectId(userId) },
-          { $set: { lastAccessedOrg: orgId.toString() } }
+        const lastAccessedOrg = await handleUserSignup(
+          userId,
+          user.email,
+          user.name,
+          ctx.body?.timezone,
         );
 
-        ctx.setHeader('x-org-id', orgId.toString());
+        ctx.setHeader('x-org-id', lastAccessedOrg);
       }
 
       if (ctx.path.startsWith('/sign-in') && ctx.context.newSession) {

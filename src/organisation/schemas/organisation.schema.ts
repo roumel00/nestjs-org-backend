@@ -50,9 +50,6 @@ export class Organisation {
 
   @Prop({ type: String, required: false, default: null })
   logo: string | null;
-
-  @Prop({ type: Date, required: false, default: null })
-  createdAt: Date | null;
 }
 
 export const OrganisationSchema = SchemaFactory.createForClass(Organisation);

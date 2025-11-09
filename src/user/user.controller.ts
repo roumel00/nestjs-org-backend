@@ -7,7 +7,7 @@ import {
 import type { UserSession } from '@thallesp/nestjs-better-auth';
 import { UserService } from './user.service.js';
 import { DeleteUserDto } from './dto/deleteUser.dto.js';
-import { DevelopmentGuard } from '../common/guards/devRoute.guard.js';
+import { DevelopmentGuard } from '../common/guards/development.guard.js';
 
 @Controller('user')
 export class UserController {

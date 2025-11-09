@@ -3,6 +3,6 @@ import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 export const CurrentOrg = createParamDecorator(
   (data: unknown, ctx: ExecutionContext) => {
     const request = ctx.switchToHttp().getRequest();
-    return { orgId: request.orgId };
+    return request.orgId;
   },
 );

@@ -1,21 +1,21 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-export type UserInOrgDocument = UserInOrg & Document;
+export type InviteInOrgDocument = InviteInOrg & Document;
 
 @Schema({ timestamps: true })
-export class UserInOrg {
+export class InviteInOrg {
   @Prop({ required: true })
   orgId: string;
 
   @Prop({ required: true })
-  userId: string;
+  email: string;
 
   @Prop({ required: true, default: 'member' })
-  role: 'owner' | 'admin' | 'member';
+  role: 'admin' | 'member';
 
   @Prop({ type: Date, required: false, default: null })
   deletedAt: Date | null;
 }
 
-export const UserInOrgSchema = SchemaFactory.createForClass(UserInOrg);
+export const InviteInOrgSchema = SchemaFactory.createForClass(InviteInOrg);
