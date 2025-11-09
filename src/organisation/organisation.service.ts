@@ -44,7 +44,6 @@ export class OrganisationService {
         timezone: org.timezone,
         owner: org.owner,
         role: userInOrg!.role,
-        createdAt: org.createdAt
       };
     });
 
