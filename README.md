@@ -22,15 +22,14 @@ A production-ready NestJS Express backend featuring organisation-based multi-ten
 - **Custom signup logic** - Handles organisation creation and user setup during registration
 - **Email verification** - OTP-based email verification using Better Auth's email OTP plugin
 - **Password management** - Forgot password, reset password with OTP verification
-- **User deletion** - Secure user account deletion functionality
+- **User deletion** - Secure user account deletion functionality via a dev-only route for cleaning up test users/orgs
 
 ### 🛡️ Security & Guards
 
-- **API route throttling** - Configurable rate limiting using `@nestjs/throttler`
+- **API route throttling** - Configurable rate limiting using `@nestjs/throttler`, typically involving emails
 - **Organisation membership checks** - `OrgMemberGuard` ensures users can only access their organisation's resources
 - **Role guards** - `RoleGuard` with `@RequiredRole()` decorator for role-based route protection
 - **Development guards** - `DevelopmentGuard` restricts certain routes to development environment only
-- **Password throttling** - Specialized throttling for password reset endpoints
 - **User throttling** - Per-user rate limiting for sensitive operations
 
 ### 📧 Email Features
@@ -135,14 +134,19 @@ All endpoints are prefixed with `/api`.
 
 ### Organisations
 - `POST /api/organisations/invite` - Invite user to organisation (requires admin role)
-- `GET /api/organisations/invite/:inviteId` - Get invite details (requires admin role)
-- `POST /api/organisations/switch` - Switch to a different organisation
-- `POST /api/organisations/user-in-org/remove` - Remove user from organisation (requires admin role)
-- `POST /api/organisations/user-in-org/change-role` - Change user role (requires owner role)
+- `DELETE /api/organisations/invite/cancel/:inviteId` - Cancel invite (requires admin role)
+- `GET /api/organisations/user` - Get user's organisations
+- `POST /api/organisations/user/switch` - Switch to a different organisation
+- `POST /api/organisations/user/removeUser` - Remove user from organisation (requires admin role)
+- `POST /api/organisations/user/changeRole` - Change user role (requires owner role)
 
 ### User Management
-- `POST /api/user/delete` - Delete user account
-- `POST /api/user/verify/verify-email` - Verify email with OTP
+- `GET /api/user/me` - Get current user
+- `GET /api/user/public` - Public endpoint (no auth required)
+- `GET /api/user/optional` - Optional auth endpoint
+- `DELETE /api/user/delete` - Delete user account (dev only, requires DevelopmentGuard)
+- `POST /api/verify` - Verify email with OTP
+- `POST /api/verify/resend` - Resend verification email OTP
 - `POST /api/password/forgot` - Request password reset OTP
 - `POST /api/password/verify-reset` - Verify password reset OTP
 - `POST /api/password/reset` - Reset password with OTP
