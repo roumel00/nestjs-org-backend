@@ -57,7 +57,7 @@ export class UserInOrgService {
     }).exec();
 
     if (!userInOrg) {
-      throw new UnauthorizedException('User is not a member of this organization');
+      throw new UnauthorizedException('User is not a member of this organisation');
     }
 
     await auth.api.updateUser({

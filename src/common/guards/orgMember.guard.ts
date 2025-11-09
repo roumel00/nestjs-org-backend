@@ -41,7 +41,7 @@ export class OrgMemberGuard implements CanActivate {
     });
 
     if (!userInOrg) {
-      throw new UnauthorizedException('User is not a member of this organization');
+      throw new UnauthorizedException('User is not a member of this organisation');
     }
 
     // Attach userInOrg to request for use in controllers
