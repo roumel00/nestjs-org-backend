@@ -24,8 +24,6 @@ export async function handleUserSignup(
     name: `${userName}'s Organisation`,
     timezone: timezone || 'UTC',
     address: null,
-    abn: null,
-    licenseNumber: null,
     phone: null,
     website: null,
     billingEmail: null,

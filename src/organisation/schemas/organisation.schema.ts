@@ -34,12 +34,6 @@ export class Organisation {
   } | null;
 
   @Prop({ type: String, required: false, default: null })
-  abn: string | null;
-
-  @Prop({ type: String, required: false, default: null })
-  licenseNumber: string | null;
-
-  @Prop({ type: String, required: false, default: null })
   phone: string | null;
 
   @Prop({ type: String, required: false, default: null })

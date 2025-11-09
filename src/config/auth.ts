@@ -29,7 +29,6 @@ export const auth = betterAuth({
       firstName: { type: 'string', required: true, input: true },
       lastName: { type: 'string', required: true, input: true },
       image: { type: 'string', required: false, input: true },
-      profession: { type: 'string', required: false, input: true },
       lastAccessedOrg: { type: 'string', required: false }
     },
     deleteUser: { 
