@@ -1,9 +1,5 @@
-import mongoose from 'mongoose';
 import { getDb } from './database.js';
 import { ObjectId } from 'mongodb';
-import { Organisation, OrganisationSchema } from '../organisation/schemas/organisation.schema.js';
-import { UserInOrg, UserInOrgSchema } from '../organisation/schemas/userInOrg.schema.js';
-import { InviteInOrg, InviteInOrgSchema } from '../organisation/schemas/inviteInOrg.schema.js';
 
 export async function handleUserSignup(
   userId: string,
@@ -13,13 +9,8 @@ export async function handleUserSignup(
 ): Promise<string> {
   const db = await getDb();
   
-  // Get Mongoose models (will return existing if already registered by NestJS)
-  const OrganisationModel = mongoose.model(Organisation.name, OrganisationSchema);
-  const UserInOrgModel = mongoose.model(UserInOrg.name, UserInOrgSchema);
-  const InviteInOrgModel = mongoose.model(InviteInOrg.name, InviteInOrgSchema);
-
-  // Create default organisation
-  const organisation = new OrganisationModel({
+  // Create default organisation using native MongoDB driver
+  const organisationResult = await db.collection('organisation').insertOne({
     owner: userId,
     name: `${userName}'s Organisation`,
     timezone: timezone || 'UTC',
@@ -28,53 +19,56 @@ export async function handleUserSignup(
     website: null,
     billingEmail: null,
     logo: null,
+    createdAt: new Date(),
+    updatedAt: new Date(),
   });
 
-  const savedOrganisation = await organisation.save();
-  const defaultOrgId = savedOrganisation._id.toString();
+  const defaultOrgId = organisationResult.insertedId.toString();
 
   // Create userInOrg for default organisation
-  const userInOrg = new UserInOrgModel({
+  await db.collection('userInOrg').insertOne({
     orgId: defaultOrgId,
     userId: userId,
     role: 'owner',
+    deletedAt: null,
+    createdAt: new Date(),
+    updatedAt: new Date(),
   });
-
-  await userInOrg.save();
-
-  // Find invites matching the user's email
-  const invites = await InviteInOrgModel.find({
+  
+  const invites = await db.collection('inviteInOrg').find({
     email: userEmail,
     deletedAt: null,
-  }).exec();
+  }).toArray();
 
   let lastAccessedOrg = defaultOrgId;
 
   if (invites.length > 0) {
     // Create userInOrg for each invite
-    const userInOrgDocs = invites.map(invite => 
-      new UserInOrgModel({
+    const userInOrgDocs = invites.map(invite => ({
         orgId: invite.orgId,
         userId: userId,
         role: invite.role,
-      })
-    );
+      deletedAt: null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }));
 
     if (userInOrgDocs.length > 0) {
-      await UserInOrgModel.insertMany(userInOrgDocs);
+      await db.collection('userInOrg').insertMany(userInOrgDocs);
     }
 
     // Delete the consumed invites
     const inviteIds = invites.map(invite => invite._id);
-    await InviteInOrgModel.deleteMany({
+    await db.collection('inviteInOrg').deleteMany({
       _id: { $in: inviteIds },
     });
 
     // Set lastAccessedOrg to the first invite's org
     lastAccessedOrg = invites[0].orgId.toString();
+    console.log(`[Signup] Set lastAccessedOrg to: ${lastAccessedOrg}`);
   }
 
-  // Update user with lastAccessedOrg (still using native driver for user collection)
+  // Update user with lastAccessedOrg
   await db.collection('user').updateOne(
     { _id: new ObjectId(userId) },
     { $set: { lastAccessedOrg: lastAccessedOrg } }

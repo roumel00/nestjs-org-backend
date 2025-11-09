@@ -33,6 +33,6 @@ export class UserController {
   @Delete('delete')
   @UseGuards(DevelopmentGuard)
   async delete(@Req() req: Request, @Session() session: UserSession, @Body() body: DeleteUserDto) {
-    return this.userService.deleteUser(req, session, body.password, body.secret);
+    return this.userService.deleteUser(req, session, body.password);
   }
 }

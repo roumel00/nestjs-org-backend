@@ -16,6 +16,7 @@ export class UserInOrgService {
   async getUserOrganisations(userId: string) {
     const userInOrgs = await this.userInOrgModel.find({
       userId: userId,
+      deletedAt: null,
     }).exec();
 
     if (userInOrgs.length === 0 || !userInOrgs) {
@@ -54,6 +55,7 @@ export class UserInOrgService {
     const userInOrg = await this.userInOrgModel.findOne({
       userId: userId,
       orgId: orgId,
+      deletedAt: null,
     }).exec();
 
     if (!userInOrg) {
@@ -72,6 +74,7 @@ export class UserInOrgService {
     const userInOrg = await this.userInOrgModel.findOne({
       userId: userId,
       orgId: orgId,
+      deletedAt: null,
     }).exec();
 
     if (!userInOrg) {
@@ -93,6 +96,7 @@ export class UserInOrgService {
     const userInOrg = await this.userInOrgModel.findOne({
       userId: userId,
       orgId: orgId,
+      deletedAt: null,
     }).exec();
     
     if (!userInOrg) {

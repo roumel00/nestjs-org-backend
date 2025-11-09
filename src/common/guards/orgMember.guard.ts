@@ -6,12 +6,17 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { getDb } from '../../config/database.js';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { UserInOrg, UserInOrgDocument } from '../../organisation/schemas/userInOrg.schema.js';
 import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class OrgMemberGuard implements CanActivate {
-  constructor(private reflector: Reflector) {}
+  constructor(
+    private reflector: Reflector,
+    @InjectModel(UserInOrg.name) private userInOrgModel: Model<UserInOrgDocument>,
+  ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
@@ -34,11 +39,11 @@ export class OrgMemberGuard implements CanActivate {
     }
 
     // Validate UserInOrg relationship exists
-    const db = await getDb();
-    const userInOrg = await db.collection('userInOrg').findOne({
+    const userInOrg = await this.userInOrgModel.findOne({
       userId: userId,
       orgId: orgId,
-    });
+      deletedAt: null,
+    }).exec();
 
     if (!userInOrg) {
       throw new UnauthorizedException('User is not a member of this organisation');

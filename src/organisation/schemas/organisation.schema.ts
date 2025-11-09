@@ -3,7 +3,7 @@ import { Document } from 'mongoose';
 
 export type OrganisationDocument = Organisation & Document;
 
-@Schema({ timestamps: true })
+@Schema({ timestamps: true, collection: 'organisation' })
 export class Organisation {
   @Prop({ required: true })
   owner: string; // userId of the owner

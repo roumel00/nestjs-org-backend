@@ -5,12 +5,14 @@ import { UserSession } from '@thallesp/nestjs-better-auth';
 import { auth } from '../config/auth.js';
 import { Organisation, OrganisationDocument } from '../organisation/schemas/organisation.schema.js';
 import { UserInOrg, UserInOrgDocument } from '../organisation/schemas/userInOrg.schema.js';
+import { InviteInOrg, InviteInOrgDocument } from '../organisation/schemas/inviteInOrg.schema.js';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(Organisation.name) private organisationModel: Model<OrganisationDocument>,
     @InjectModel(UserInOrg.name) private userInOrgModel: Model<UserInOrgDocument>,
+    @InjectModel(InviteInOrg.name) private inviteInOrgModel: Model<InviteInOrgDocument>,
   ) {}
 
   getHello(): string {
@@ -29,7 +31,7 @@ export class UserService {
     return { authenticated: !!session };
   }
 
-  async deleteUser(req: Request, session: UserSession, password: string, secret: string) {    
+  async deleteUser(req: Request, session: UserSession, password: string) {    
     const ownerUserInOrgs = await this.userInOrgModel.find({
       userId: session.user.id,
       role: 'owner'
@@ -41,6 +43,11 @@ export class UserService {
       userId: session.user.id,
     }).exec();
 
+    await this.inviteInOrgModel.deleteMany({
+      email: session.user.email,
+      deletedAt: { $ne: null }
+    }).exec();
+
     if (ownerOrgIds.length > 0) {
       await Promise.all([
         this.userInOrgModel.deleteMany({
@@ -48,7 +55,10 @@ export class UserService {
         }).exec(),
         this.organisationModel.deleteMany({
           _id: { $in: ownerOrgIds }
-        }).exec()
+        }).exec(),
+        this.inviteInOrgModel.deleteMany({
+          _id: { $in: ownerOrgIds }
+        }).exec(),
       ]);
     }
 

@@ -32,6 +32,7 @@ export class InviteService {
       const existingUserInOrg = await this.userInOrgModel.findOne({
         userId: user._id.toString(),
         orgId: orgId,
+        deletedAt: null,
       }).exec();
 
       if (existingUserInOrg) {

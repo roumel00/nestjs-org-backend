@@ -3,7 +3,7 @@ import { Document } from 'mongoose';
 
 export type InviteInOrgDocument = InviteInOrg & Document;
 
-@Schema({ timestamps: true })
+@Schema({ timestamps: true, collection: 'inviteInOrg' })
 export class InviteInOrg {
   @Prop({ required: true })
   orgId: string;
