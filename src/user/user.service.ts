@@ -4,15 +4,13 @@ import { Model } from 'mongoose';
 import { UserSession } from '@thallesp/nestjs-better-auth';
 import { auth } from '../config/auth.js';
 import { Organisation, OrganisationDocument } from '../organisation/schemas/organisation.schema.js';
-import { UserInOrg, UserInOrgDocument } from '../organisation/schemas/userInOrg.schema.js';
-import { InviteInOrg, InviteInOrgDocument } from '../organisation/schemas/inviteInOrg.schema.js';
+import { TeamMember, TeamMemberDocument } from '../organisation/schemas/teamMember.schema.js';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(Organisation.name) private organisationModel: Model<OrganisationDocument>,
-    @InjectModel(UserInOrg.name) private userInOrgModel: Model<UserInOrgDocument>,
-    @InjectModel(InviteInOrg.name) private inviteInOrgModel: Model<InviteInOrgDocument>,
+    @InjectModel(TeamMember.name) private teamMemberModel: Model<TeamMemberDocument>,
   ) {}
 
   getHello(): string {
@@ -32,31 +30,29 @@ export class UserService {
   }
 
   async deleteUser(req: Request, session: UserSession, password: string) {    
-    const ownerUserInOrgs = await this.userInOrgModel.find({
+    const ownerTeamMembers = await this.teamMemberModel.find({
       userId: session.user.id,
       role: 'owner'
     }).select('orgId').lean().exec();
 
-    const ownerOrgIds = ownerUserInOrgs.map(uio => uio.orgId);
+    const ownerOrgIds = ownerTeamMembers.map(tm => tm.orgId);
 
-    await this.userInOrgModel.deleteMany({
+    await this.teamMemberModel.deleteMany({
       userId: session.user.id,
     }).exec();
 
-    await this.inviteInOrgModel.deleteMany({
+    await this.teamMemberModel.deleteMany({
       email: session.user.email,
+      userId: null,
       deletedAt: { $ne: null }
     }).exec();
 
     if (ownerOrgIds.length > 0) {
       await Promise.all([
-        this.userInOrgModel.deleteMany({
+        this.teamMemberModel.deleteMany({
           orgId: { $in: ownerOrgIds }
         }).exec(),
         this.organisationModel.deleteMany({
-          _id: { $in: ownerOrgIds }
-        }).exec(),
-        this.inviteInOrgModel.deleteMany({
           _id: { $in: ownerOrgIds }
         }).exec(),
       ]);

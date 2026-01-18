@@ -4,13 +4,13 @@ import { OrgMemberGuard } from './orgMember.guard.js';
 import { UserThrottlerGuard } from './userThrottler.guard.js';
 import { PasswordThrottlerGuard } from './passwordThrottler.guard.js';
 import { RoleGuard } from './role.guard.js';
-import { UserInOrg, UserInOrgSchema } from '../../organisation/schemas/userInOrg.schema.js';
+import { TeamMember, TeamMemberSchema } from '../../organisation/schemas/teamMember.schema.js';
 
 @Global()
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: UserInOrg.name, schema: UserInOrgSchema },
+      { name: TeamMember.name, schema: TeamMemberSchema },
     ]),
   ],
   providers: [

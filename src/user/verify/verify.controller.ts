@@ -1,5 +1,5 @@
 import { Controller, Post, Body, UseGuards } from '@nestjs/common';
-import { Session } from '@thallesp/nestjs-better-auth';
+import { OptionalAuth, Session } from '@thallesp/nestjs-better-auth';
 import type { UserSession } from '@thallesp/nestjs-better-auth';
 import { Throttle, minutes } from '@nestjs/throttler';
 import { VerifyService } from './verify.service.js';
@@ -11,6 +11,7 @@ export class VerifyController {
   constructor(private readonly verifyService: VerifyService) {}
 
   @Post()
+  @OptionalAuth()
   async verify(@Session() session: UserSession, @Body() body: VerifyUserDto) {
     return this.verifyService.verifyUser(session, body.otp);
   }

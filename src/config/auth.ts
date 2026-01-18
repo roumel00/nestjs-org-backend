@@ -12,7 +12,7 @@ const client = mongoClient();
 export const auth = betterAuth({
   secret: process.env.BETTER_AUTH_SECRET,
   baseURL: process.env.BASE_URL,
-  trustedOrigins: process.env.CORS_ORIGIN?.split(',') || ['http://localhost:3050'],
+  trustedOrigins: process.env.CORS_ORIGIN?.split(',') || ['http://localhost:3050', 'http://localhost:3000'],
 
   database: mongodbAdapter(db, { client: client }),
 
@@ -38,9 +38,6 @@ export const auth = betterAuth({
 
   plugins: [
     emailOTP({ 
-      overrideDefaultEmailVerification: true,
-      sendVerificationOnSignUp: true,
-
       async sendVerificationOTP({ email, otp, type }) { 
         if (type === "email-verification") { 
           await sendOtpEmail({ 
@@ -58,6 +55,9 @@ export const auth = betterAuth({
           });
         }
       }, 
+      sendVerificationOnSignUp: true,
+      otpLength: 6,
+      expiresIn: 300,
     }) 
   ],
 
@@ -67,20 +67,10 @@ export const auth = betterAuth({
         const userId = ctx.context.newSession.user.id;
         const user = ctx.context.newSession.user;
 
-        const lastAccessedOrg = await handleUserSignup(
+        await handleUserSignup(
           userId,
           user.email,
-          user.name,
-          ctx.body?.timezone,
         );
-
-        ctx.setHeader('x-org-id', lastAccessedOrg);
-      }
-
-      if (ctx.path.startsWith('/sign-in') && ctx.context.newSession) {
-        const user = ctx.context.newSession.user;
-
-        ctx.setHeader('x-org-id', user.lastAccessedOrg);
       }
     }),
   },

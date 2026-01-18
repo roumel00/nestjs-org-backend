@@ -18,7 +18,7 @@ A production-ready NestJS Express backend featuring organisation-based multi-ten
 - **Organisation-based authentication** - Multi-tenant architecture with organisation isolation
 - **Role-based access control (RBAC)** - Support for `admin` and `owner` roles with granular permissions
 - **Organisational invites** - Invite users to organisations with specific roles
-- **Automatic organisation context** - `@CurrentOrg()` decorator automatically extracts the current organisation from request headers
+- **Automatic organisation context** - `@CurrentOrg()` decorator automatically extracts the current organisation from the user session
 - **Custom signup logic** - Handles organisation creation and user setup during registration
 - **Email verification** - OTP-based email verification using Better Auth's email OTP plugin
 - **Password management** - Forgot password, reset password with OTP verification
@@ -52,7 +52,7 @@ A production-ready NestJS Express backend featuring organisation-based multi-ten
 - **Global validation pipes** - Automatic DTO validation and transformation
 - **CORS configuration** - Configurable CORS with credential support
 - **Environment-based configuration** - Uses `@nestjs/config` for environment variables
-- **Modular architecture** - Well-organized modules for maintainability
+- **Modular architecture** - Well-organised modules for maintainability
 - **Custom decorators** - Reusable decorators for common patterns (`@CurrentOrg`, `@RequiredRole`)
 
 ## Project Structure
@@ -162,7 +162,7 @@ All endpoints are prefixed with `/api`.
 @Get('my-org-data')
 @UseGuards(OrgMemberGuard)
 async getOrgData(@CurrentOrg() orgId: string) {
-  // orgId is automatically extracted from x-org-id header
+  // orgId is automatically extracted from session.user.lastAccessedOrg
   return this.service.getDataForOrg(orgId);
 }
 ```

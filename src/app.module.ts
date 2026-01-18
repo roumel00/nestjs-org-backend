@@ -7,15 +7,15 @@ import { AuthModule } from '@thallesp/nestjs-better-auth';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { GuardsModule } from './common/guards/guards.module.js';
+import { LoggerModule } from './common/logger/logger.module.js';
 import { auth } from './config/auth.js';
 import { OrganisationModule } from './organisation/organisation.module.js';
 import { UserModule } from './user/user.module.js';
-import { APP_FILTER } from '@nestjs/core';
-import { SentryGlobalFilter } from '@sentry/nestjs/setup';
 
 @Module({
   imports: [
     SentryModule.forRoot(),
+    LoggerModule,
     ConfigModule.forRoot({ isGlobal: true }),
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
@@ -34,12 +34,6 @@ import { SentryGlobalFilter } from '@sentry/nestjs/setup';
     OrganisationModule,
   ],
   controllers: [AppController],
-  providers: [
-    AppService,
-    {
-      provide: APP_FILTER,
-      useClass: SentryGlobalFilter,
-    },
-  ],
+  providers: [AppService],
 })
 export class AppModule {}

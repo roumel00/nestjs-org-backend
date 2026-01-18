@@ -27,15 +27,15 @@ export class RoleGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest();
 
-    const userInOrg = request.userInOrg;
+    const teamMember = request.teamMember || request.userInOrg;
     
-    if (!userInOrg) {
+    if (!teamMember) {
       throw new BadRequestException(
         'OrgMemberGuard must be applied before RoleGuard. User membership not validated.',
       );
     }
 
-    const userRole = userInOrg.role;
+    const userRole = teamMember.role;
     const hasPermission = this.checkRolePermission(userRole, requiredRole);
 
     if (!hasPermission) {

@@ -86,7 +86,7 @@ export async function sendInviteEmail({
   }
 
   const { error } = await resend.emails.send({
-    from: 'invite@' + (process.env.EMAIL_DOMAIN ?? 'notifications.jakl.au'),
+    from: 'noreply@' + (process.env.EMAIL_DOMAIN ?? 'notifications.jakl.au'),
     to: email,
     subject: `You've been invited to join ${orgName}`,
     html,

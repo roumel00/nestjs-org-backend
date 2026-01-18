@@ -8,14 +8,14 @@ import {
 import { Reflector } from '@nestjs/core';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { UserInOrg, UserInOrgDocument } from '../../organisation/schemas/userInOrg.schema.js';
+import { TeamMember, TeamMemberDocument } from '../../organisation/schemas/teamMember.schema.js';
 import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class OrgMemberGuard implements CanActivate {
   constructor(
     private reflector: Reflector,
-    @InjectModel(UserInOrg.name) private userInOrgModel: Model<UserInOrgDocument>,
+    @InjectModel(TeamMember.name) private teamMemberModel: Model<TeamMemberDocument>,
   ) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -28,29 +28,30 @@ export class OrgMemberGuard implements CanActivate {
     }
     const userId = session.user.id;
 
-    // Get org ID from headers
-    const orgId = request.headers['x-org-id'];
+    // Get org ID from user's lastAccessedOrg (stored in session)
+    const orgId = session.user.lastAccessedOrg;
     if (!orgId) {
-      throw new BadRequestException('Organisation ID is required');
+      throw new BadRequestException('No organisation selected. Please select an organisation first.');
     }
 
     if (!ObjectId.isValid(orgId)) {
       throw new BadRequestException('Invalid Organisation ID format');
     }
 
-    // Validate UserInOrg relationship exists
-    const userInOrg = await this.userInOrgModel.findOne({
+    // Validate TeamMember relationship exists
+    const teamMember = await this.teamMemberModel.findOne({
       userId: userId,
       orgId: orgId,
       deletedAt: null,
     }).exec();
 
-    if (!userInOrg) {
+    if (!teamMember) {
       throw new UnauthorizedException('User is not a member of this organisation');
     }
 
-    // Attach userInOrg to request for use in controllers
-    request.userInOrg = userInOrg;
+    // Attach teamMember to request for use in controllers (keeping userInOrg for backward compatibility)
+    request.userInOrg = teamMember;
+    request.teamMember = teamMember;
     request.orgId = orgId;
 
     return true;

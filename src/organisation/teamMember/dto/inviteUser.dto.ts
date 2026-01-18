@@ -1,11 +1,12 @@
 import { IsString, IsNotEmpty } from 'class-validator';
 
-export class ChangeRoleDto {
+export class InviteUserDto {
   @IsString()
   @IsNotEmpty()
-  userId: string;
+  email: string;
 
   @IsString()
   @IsNotEmpty()
   role: string;
 }
+

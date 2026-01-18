@@ -1,15 +1,18 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-export type UserInOrgDocument = UserInOrg & Document;
+export type TeamMemberDocument = TeamMember & Document;
 
-@Schema({ timestamps: true, collection: 'userInOrg' })
-export class UserInOrg {
+@Schema({ timestamps: true, collection: 'teamMember' })
+export class TeamMember {
   @Prop({ required: true })
   orgId: string;
 
   @Prop({ required: true })
-  userId: string;
+  email: string;
+
+  @Prop({ type: String, required: false, default: null })
+  userId: string | null;
 
   @Prop({ required: true, default: 'member' })
   role: 'owner' | 'admin' | 'member';
@@ -18,4 +21,5 @@ export class UserInOrg {
   deletedAt: Date | null;
 }
 
-export const UserInOrgSchema = SchemaFactory.createForClass(UserInOrg);
+export const TeamMemberSchema = SchemaFactory.createForClass(TeamMember);
+
