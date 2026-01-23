@@ -3,7 +3,7 @@ import { OptionalAuth, Session } from '@thallesp/nestjs-better-auth';
 import type { UserSession } from '@thallesp/nestjs-better-auth';
 import { Throttle, minutes } from '@nestjs/throttler';
 import { VerifyService } from './verify.service.js';
-import { VerifyUserDto } from './dto/verifyEmail.dto.js';
+import { VerifyUserRequest } from './dto/verifyEmail.dto.js';
 import { UserThrottlerGuard } from '../../common/guards/userThrottler.guard.js';
 
 @Controller('verify')
@@ -12,7 +12,7 @@ export class VerifyController {
 
   @Post()
   @OptionalAuth()
-  async verify(@Session() session: UserSession, @Body() body: VerifyUserDto) {
+  async verify(@Session() session: UserSession, @Body() body: VerifyUserRequest) {
     return this.verifyService.verifyUser(session, body.otp);
   }
 

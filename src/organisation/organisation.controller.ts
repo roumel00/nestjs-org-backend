@@ -2,7 +2,7 @@ import { Controller, Post, Body, Req } from '@nestjs/common';
 import { Session } from '@thallesp/nestjs-better-auth';
 import type { UserSession } from '@thallesp/nestjs-better-auth';
 import { OrganisationService } from './organisation.service.js';
-import { CreateOrganisationDto } from './dto/createOrganisation.dto.js';
+import { CreateOrganisationRequest } from './dto/createOrganisation.dto.js';
 
 @Controller('organisations')
 export class OrganisationController {
@@ -11,7 +11,7 @@ export class OrganisationController {
   @Post()
   async createOrganisation(
     @Session() session: UserSession,
-    @Body() body: CreateOrganisationDto,
+    @Body() body: CreateOrganisationRequest,
     @Req() req: Request,
   ) {
     return this.organisationService.createOrganisation(

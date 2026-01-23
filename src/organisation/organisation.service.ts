@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Organisation, OrganisationDocument } from './schemas/organisation.schema.js';
 import { TeamMember, TeamMemberDocument } from './schemas/teamMember.schema.js';
-import { CreateOrganisationDto } from './dto/createOrganisation.dto.js';
+import { CreateOrganisationRequest } from './dto/createOrganisation.dto.js';
 import { auth } from '../config/auth.js';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class OrganisationService {
     @InjectModel(TeamMember.name) private teamMemberModel: Model<TeamMemberDocument>,
   ) {}
 
-  async createOrganisation(userId: string, userEmail: string, createOrgDto: CreateOrganisationDto, req: Request) {
+  async createOrganisation(userId: string, userEmail: string, createOrgDto: CreateOrganisationRequest, req: Request) {
     // Check if user already owns an organisation
     const existingOwnership = await this.teamMemberModel.findOne({
       userId: userId,

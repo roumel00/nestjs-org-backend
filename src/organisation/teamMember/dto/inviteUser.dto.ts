@@ -1,6 +1,6 @@
 import { IsString, IsNotEmpty } from 'class-validator';
 
-export class InviteUserDto {
+export class InviteUserRequest {
   @IsString()
   @IsNotEmpty()
   email: string;

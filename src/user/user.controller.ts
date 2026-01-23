@@ -6,7 +6,7 @@ import {
 } from '@thallesp/nestjs-better-auth';
 import type { UserSession } from '@thallesp/nestjs-better-auth';
 import { UserService } from './user.service.js';
-import { DeleteUserDto } from './dto/deleteUser.dto.js';
+import { DeleteUserRequest } from './dto/deleteUser.dto.js';
 import { DevelopmentGuard } from '../common/guards/development.guard.js';
 
 @Controller('user')
@@ -32,7 +32,7 @@ export class UserController {
 
   @Delete('delete')
   @UseGuards(DevelopmentGuard)
-  async delete(@Req() req: Request, @Session() session: UserSession, @Body() body: DeleteUserDto) {
+  async delete(@Req() req: Request, @Session() session: UserSession, @Body() body: DeleteUserRequest) {
     return this.userService.deleteUser(req, session, body.password);
   }
 }

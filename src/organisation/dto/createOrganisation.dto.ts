@@ -1,7 +1,7 @@
 import { IsString, IsNotEmpty, IsOptional, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
 
-class AddressDto {
+class Address {
   @IsString()
   @IsOptional()
   street?: string;
@@ -23,7 +23,7 @@ class AddressDto {
   country?: string;
 }
 
-export class CreateOrganisationDto {
+export class CreateOrganisationRequest {
   @IsString()
   @IsNotEmpty()
   name: string;
@@ -41,9 +41,9 @@ export class CreateOrganisationDto {
   phone?: string;
 
   @ValidateNested()
-  @Type(() => AddressDto)
+  @Type(() => Address)
   @IsOptional()
-  address?: AddressDto;
+  address?: Address;
 
   @IsString()
   @IsOptional()

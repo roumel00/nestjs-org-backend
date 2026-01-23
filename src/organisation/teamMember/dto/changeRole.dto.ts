@@ -1,6 +1,6 @@
 import { IsString, IsNotEmpty } from 'class-validator';
 
-export class ChangeRoleDto {
+export class ChangeRoleRequest {
   @IsString()
   @IsNotEmpty()
   userId: string;

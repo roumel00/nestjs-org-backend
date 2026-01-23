@@ -1,6 +1,6 @@
 import { IsString, IsNotEmpty } from 'class-validator';
 
-export class VerifyUserDto {
+export class VerifyUserRequest {
   @IsString()
   @IsNotEmpty()
   otp: string;
