@@ -1,0 +1,25 @@
+{
+  "$schema": "https://swc.rs/schema.json",
+  "sourceMaps": true,
+  "jsc": {
+    "parser": {
+      "syntax": "typescript",
+      "decorators": true
+    },
+    "transform": {
+      "decoratorMetadata": true,
+      "legacyDecorator": true
+    },
+    "baseUrl": "./",
+    "paths": {
+      "@schemas/*": ["src/schemas/*"],
+      "@config/*": ["src/config/*"],
+      "@common/*": ["src/common/*"],
+      "@domain/*": ["src/domain/*"]
+    },
+    "target": "es2022"
+  },
+  "module": {
+    "type": "es6"
+  }
+}
