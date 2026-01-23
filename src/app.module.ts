@@ -11,6 +11,7 @@ import { LoggerModule } from '@common/logger/logger.module.js';
 import { auth } from '@config/betterAuth.js';
 import { AuthModule as DomainAuthModule } from '@domain/auth/auth.module.js';
 import { OrganisationModule } from '@domain/organisation/organisation.module.js';
+import { MediaModule } from '@domain/media/media.module.js';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { OrganisationModule } from '@domain/organisation/organisation.module.js'
     GuardsModule,
     DomainAuthModule,
     OrganisationModule,
+    MediaModule,
   ],
   controllers: [AppController],
   providers: [AppService],
