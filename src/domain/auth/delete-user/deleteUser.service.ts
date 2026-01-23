@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserSession } from '@thallesp/nestjs-better-auth';
-import { auth } from '../../../config/betterAuth.js';
-import { Organisation, OrganisationDocument } from '../../../schemas/organisation.schema.js';
-import { TeamMember, TeamMemberDocument } from '../../../schemas/teamMember.schema.js';
+import { auth } from '@config/betterAuth.js';
+import { Organisation, OrganisationDocument } from '@schemas/organisation.schema.js';
+import { TeamMember, TeamMemberDocument } from '@schemas/teamMember.schema.js';
 
 @Injectable()
 export class DeleteUserService {

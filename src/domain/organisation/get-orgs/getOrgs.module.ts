@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { GetOrgsController } from './getOrgs.controller.js';
 import { GetOrgsService } from './getOrgs.service.js';
-import { Organisation, OrganisationSchema } from '../../../schemas/organisation.schema.js';
-import { TeamMember, TeamMemberSchema } from '../../../schemas/teamMember.schema.js';
+import { Organisation, OrganisationSchema } from '@schemas/organisation.schema.js';
+import { TeamMember, TeamMemberSchema } from '@schemas/teamMember.schema.js';
 
 @Module({
   imports: [

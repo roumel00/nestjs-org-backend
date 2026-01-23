@@ -3,7 +3,7 @@ import { Session } from '@thallesp/nestjs-better-auth';
 import type { UserSession } from '@thallesp/nestjs-better-auth';
 import { Throttle, minutes } from '@nestjs/throttler';
 import { ResendVerificationService } from './resendVerification.service.js';
-import { UserThrottlerGuard } from '../../../common/guards/userThrottler.guard.js';
+import { UserThrottlerGuard } from '@common/guards/userThrottler.guard.js';
 
 @Controller('verify')
 export class ResendVerificationController {

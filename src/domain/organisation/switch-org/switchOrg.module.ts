@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { SwitchOrgController } from './switchOrg.controller.js';
 import { SwitchOrgService } from './switchOrg.service.js';
-import { TeamMember, TeamMemberSchema } from '../../../schemas/teamMember.schema.js';
+import { TeamMember, TeamMemberSchema } from '@schemas/teamMember.schema.js';
 
 @Module({
   imports: [

@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Organisation, OrganisationDocument } from '../../../schemas/organisation.schema.js';
-import { TeamMember, TeamMemberDocument } from '../../../schemas/teamMember.schema.js';
-import { getDb } from '../../../config/database.js';
-import { sendInviteEmail } from '../../../config/email.js';
+import { Organisation, OrganisationDocument } from '@schemas/organisation.schema.js';
+import { TeamMember, TeamMemberDocument } from '@schemas/teamMember.schema.js';
+import { getDb } from '@config/database.js';
+import { sendInviteEmail } from '@config/email.js';
 
 @Injectable()
 export class InviteService {

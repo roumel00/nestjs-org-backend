@@ -3,7 +3,7 @@ import { Session } from '@thallesp/nestjs-better-auth';
 import type { UserSession } from '@thallesp/nestjs-better-auth';
 import { DeleteUserService } from './deleteUser.service.js';
 import { DeleteUserRequest } from './deleteUser.dto.js';
-import { DevelopmentGuard } from '../../../common/guards/development.guard.js';
+import { DevelopmentGuard } from '@common/guards/development.guard.js';
 
 @Controller('user')
 export class DeleteUserController {

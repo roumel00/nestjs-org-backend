@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { UserSession } from '@thallesp/nestjs-better-auth';
-import { auth } from '../../../config/betterAuth.js';
+import { auth } from '@config/betterAuth.js';
 
 @Injectable()
 export class ResendVerificationService {

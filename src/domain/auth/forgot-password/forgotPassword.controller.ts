@@ -3,7 +3,7 @@ import { Throttle, minutes } from '@nestjs/throttler';
 import { AllowAnonymous } from '@thallesp/nestjs-better-auth';
 import { ForgotPasswordService } from './forgotPassword.service.js';
 import { ForgotPasswordRequest } from './forgotPassword.dto.js';
-import { PasswordThrottlerGuard } from '../../../common/guards/passwordThrottler.guard.js';
+import { PasswordThrottlerGuard } from '@common/guards/passwordThrottler.guard.js';
 
 @Controller('password')
 export class ForgotPasswordController {

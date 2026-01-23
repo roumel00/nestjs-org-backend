@@ -1,8 +1,8 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { TeamMember, TeamMemberDocument } from '../../../schemas/teamMember.schema.js';
-import { auth } from '../../../config/betterAuth.js';
+import { TeamMember, TeamMemberDocument } from '@schemas/teamMember.schema.js';
+import { auth } from '@config/betterAuth.js';
 
 @Injectable()
 export class SwitchOrgService {

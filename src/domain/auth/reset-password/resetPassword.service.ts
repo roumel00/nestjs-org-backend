@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { auth } from '../../../config/betterAuth.js';
+import { auth } from '@config/betterAuth.js';
 
 @Injectable()
 export class ResetPasswordService {

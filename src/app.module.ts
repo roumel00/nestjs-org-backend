@@ -6,11 +6,11 @@ import { ThrottlerModule, minutes } from '@nestjs/throttler';
 import { AuthModule } from '@thallesp/nestjs-better-auth';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
-import { GuardsModule } from './common/guards/guards.module.js';
-import { LoggerModule } from './common/logger/logger.module.js';
-import { auth } from './config/betterAuth.js';
-import { AuthModule as DomainAuthModule } from './domain/auth/auth.module.js';
-import { OrganisationModule } from './domain/organisation/organisation.module.js';
+import { GuardsModule } from '@common/guards/guards.module.js';
+import { LoggerModule } from '@common/logger/logger.module.js';
+import { auth } from '@config/betterAuth.js';
+import { AuthModule as DomainAuthModule } from '@domain/auth/auth.module.js';
+import { OrganisationModule } from '@domain/organisation/organisation.module.js';
 
 @Module({
   imports: [

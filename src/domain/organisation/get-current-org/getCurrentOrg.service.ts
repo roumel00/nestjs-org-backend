@@ -2,8 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserSession } from '@thallesp/nestjs-better-auth';
-import { Organisation, OrganisationDocument } from '../../../schemas/organisation.schema.js';
-import { TeamMember, TeamMemberDocument } from '../../../schemas/teamMember.schema.js';
+import { Organisation, OrganisationDocument } from '@schemas/organisation.schema.js';
+import { TeamMember, TeamMemberDocument } from '@schemas/teamMember.schema.js';
 
 type ExtendedUserSession = UserSession & {
   user: UserSession['user'] & {

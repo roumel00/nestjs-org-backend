@@ -1,7 +1,7 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { TeamMember, TeamMemberDocument } from '../../../schemas/teamMember.schema.js';
+import { TeamMember, TeamMemberDocument } from '@schemas/teamMember.schema.js';
 
 @Injectable()
 export class ChangeRoleService {
