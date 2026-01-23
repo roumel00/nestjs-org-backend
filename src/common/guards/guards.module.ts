@@ -4,7 +4,7 @@ import { OrgMemberGuard } from './orgMember.guard.js';
 import { UserThrottlerGuard } from './userThrottler.guard.js';
 import { PasswordThrottlerGuard } from './passwordThrottler.guard.js';
 import { RoleGuard } from './role.guard.js';
-import { TeamMember, TeamMemberSchema } from '../../organisation/schemas/teamMember.schema.js';
+import { TeamMember, TeamMemberSchema } from '../../schemas/teamMember.schema.js';
 
 @Global()
 @Module({

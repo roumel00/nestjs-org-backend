@@ -8,9 +8,9 @@ import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { GuardsModule } from './common/guards/guards.module.js';
 import { LoggerModule } from './common/logger/logger.module.js';
-import { auth } from './config/auth.js';
-import { OrganisationModule } from './organisation/organisation.module.js';
-import { UserModule } from './user/user.module.js';
+import { auth } from './config/betterAuth.js';
+import { AuthModule as DomainAuthModule } from './domain/auth/auth.module.js';
+import { OrganisationModule } from './domain/organisation/organisation.module.js';
 
 @Module({
   imports: [
@@ -30,7 +30,7 @@ import { UserModule } from './user/user.module.js';
       { ttl: minutes(5), limit: 1 },
     ]),
     GuardsModule,
-    UserModule,
+    DomainAuthModule,
     OrganisationModule,
   ],
   controllers: [AppController],

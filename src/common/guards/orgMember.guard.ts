@@ -8,7 +8,7 @@ import {
 import { Reflector } from '@nestjs/core';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { TeamMember, TeamMemberDocument } from '../../organisation/schemas/teamMember.schema.js';
+import { TeamMember, TeamMemberDocument } from '../../schemas/teamMember.schema.js';
 import { ObjectId } from 'mongodb';
 
 @Injectable()

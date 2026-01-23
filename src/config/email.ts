@@ -1,5 +1,11 @@
 import { Resend } from 'resend';
-import type { SendOtpEmailParams } from './dto/email.dto.js';
+
+export interface SendOtpEmailParams {
+  email: string;
+  otp: string;
+  subject: string;
+  purpose: string;
+}
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
