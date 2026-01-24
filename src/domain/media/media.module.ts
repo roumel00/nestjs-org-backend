@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
-import { GetImageUploadTokenModule } from './get-image-upload-token/getImageUploadToken.module.js';
+import { GetImageUploadTokensModule } from './get-image-upload-tokens/getImageUploadTokens.module.js';
 
 @Module({
-  imports: [GetImageUploadTokenModule],
+  imports: [GetImageUploadTokensModule],
 })
 export class MediaModule {}
