@@ -12,8 +12,6 @@ export class GetImageUploadTokensService {
     switch (fileType) {
       case 'avatar':
         return 'avatars/';
-      case 'logo':
-        return 'logos/';
       default:
         throw new BadRequestException(`Invalid fileType: ${fileType}`);
     }
