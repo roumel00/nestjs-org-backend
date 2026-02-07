@@ -11,7 +11,7 @@ export class ForgotPasswordController {
 
   @Post('forgot')
   @UseGuards(PasswordThrottlerGuard)
-  @Throttle({ default: { ttl: minutes(5), limit: 1 } })
+  @Throttle({ default: { ttl: minutes(5), limit: 2 } })
   @AllowAnonymous()
   async forgotPassword(@Body() body: ForgotPasswordRequest) {
     return this.forgotPasswordService.forgotPassword(body.email);
