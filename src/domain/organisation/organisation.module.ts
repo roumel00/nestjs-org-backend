@@ -7,6 +7,7 @@ import { InviteModule } from './invite/invite.module.js';
 import { RemoveUserModule } from './remove-user/removeUser.module.js';
 import { ChangeRoleModule } from './change-role/changeRole.module.js';
 import { CancelInviteModule } from './cancel-invite/cancelInvite.module.js';
+import { GetTeamMembersModule } from './get-team-members/getTeamMembers.module.js';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { CancelInviteModule } from './cancel-invite/cancelInvite.module.js';
     RemoveUserModule,
     ChangeRoleModule,
     CancelInviteModule,
+    GetTeamMembersModule,
   ],
 })
 export class OrganisationModule {}

@@ -26,7 +26,7 @@ export class ChangeRoleService {
 
     await this.teamMemberModel.updateOne({
       _id: teamMember._id,
-    }, { $set: { role: role as 'owner' | 'admin' | 'member' } }).exec();
+    }, { $set: { role: role as 'owner' | 'admin' | 'member' | 'invitee' } }).exec();
 
     return { message: 'Role changed successfully' }
   }

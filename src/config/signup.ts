@@ -20,7 +20,7 @@ export async function handleUserSignup(
     const inviteIds = invites.map(invite => invite._id);
     await db.collection('teamMember').updateMany(
       { _id: { $in: inviteIds } },
-      { $set: { userId: userId, updatedAt: new Date() } }
+      { $set: { userId: userId, role: 'member', updatedAt: new Date() } }
     );
 
     // Set lastAccessedOrg to the first invite's org

@@ -15,7 +15,7 @@ export class TeamMember {
   userId: string | null;
 
   @Prop({ required: true, default: 'member' })
-  role: 'owner' | 'admin' | 'member';
+  role: 'owner' | 'admin' | 'member' | 'invitee';
 
   @Prop({ type: Date, required: false, default: null })
   deletedAt: Date | null;

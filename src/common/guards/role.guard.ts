@@ -14,7 +14,7 @@ export class RoleGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
     // Get required role from decorator metadata
-    const requiredRole = this.reflector.get<'owner' | 'admin' | 'member'>(
+    const requiredRole = this.reflector.get<'owner' | 'admin' | 'member' | 'invitee'>(
       REQUIRED_ROLE_KEY,
       context.getHandler(),
     );
@@ -48,13 +48,14 @@ export class RoleGuard implements CanActivate {
   }
 
   private checkRolePermission(
-    userRole: 'owner' | 'admin' | 'member',
-    requiredRole: 'owner' | 'admin' | 'member',
+    userRole: 'owner' | 'admin' | 'member' | 'invitee',
+    requiredRole: 'owner' | 'admin' | 'member' | 'invitee',
   ): boolean {
     const roleHierarchy = {
       owner: 3,
       admin: 2,
       member: 1,
+      invitee: 0,
     };
 
     return roleHierarchy[userRole] >= roleHierarchy[requiredRole];

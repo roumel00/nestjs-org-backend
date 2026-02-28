@@ -3,7 +3,7 @@ import { Session } from '@thallesp/nestjs-better-auth';
 import type { UserSession } from '@thallesp/nestjs-better-auth';
 import { GetOrgsService } from './getOrgs.service.js';
 
-@Controller('organisations/team')
+@Controller('organisations')
 export class GetOrgsController {
   constructor(private readonly getOrgsService: GetOrgsService) {}
 

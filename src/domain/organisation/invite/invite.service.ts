@@ -13,7 +13,7 @@ export class InviteService {
     @InjectModel(TeamMember.name) private teamMemberModel: Model<TeamMemberDocument>,
   ) {}
 
-  async invite(email: string, role: string, orgId: string) {
+  async invite(email: string, orgId: string) {
     // Get organisation name for email
     const organisation = await this.organisationModel.findById(orgId).exec();
 
@@ -47,19 +47,19 @@ export class InviteService {
 
       let savedTeamMember: TeamMemberDocument | null;
       if (existingInvite) {
-        // Convert invite to teamMember by updating userId
+        // Convert invite to member by updating userId and promoting role
         await this.teamMemberModel.updateOne(
           { _id: existingInvite._id },
-          { $set: { userId: user._id.toString(), role: role as 'owner' | 'admin' | 'member' } }
+          { $set: { userId: user._id.toString(), role: 'member' } }
         ).exec();
         savedTeamMember = await this.teamMemberModel.findById(existingInvite._id).exec();
       } else {
-        // Create new teamMember
+        // Create new teamMember as member (existing user accepts immediately)
         const teamMember = new this.teamMemberModel({
           orgId,
           email,
           userId: user._id.toString(),
-          role: role as 'owner' | 'admin' | 'member',
+          role: 'member',
         });
         savedTeamMember = await teamMember.save();
       }
@@ -72,7 +72,7 @@ export class InviteService {
       await sendInviteEmail({
         email,
         orgName: organisation.name,
-        role,
+        role: 'member',
         existingUser: true,
       });
 
@@ -94,7 +94,7 @@ export class InviteService {
         orgId,
         email,
         userId: null,
-        role: role as 'admin' | 'member',
+        role: 'invitee',
       });
 
       const savedTeamMember = await teamMember.save();
@@ -103,7 +103,7 @@ export class InviteService {
       await sendInviteEmail({
         email,
         orgName: organisation.name,
-        role,
+        role: 'invitee',
         existingUser: false,
       });
 

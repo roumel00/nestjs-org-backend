@@ -17,6 +17,6 @@ export class InviteController {
   @Throttle({ default: { ttl: minutes(60), limit: 50 } })
   @RequiredRole('admin')
   async invite(@CurrentOrg() orgId: string, @Body() body: InviteRequest) {
-    return this.inviteService.invite(body.email, body.role, orgId);
+    return this.inviteService.invite(body.email, orgId);
   }
 }
