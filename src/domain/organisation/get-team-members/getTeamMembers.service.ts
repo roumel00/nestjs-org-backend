@@ -40,7 +40,13 @@ export class GetTeamMembersService {
     private teamMemberModel: Model<TeamMemberDocument>,
   ) {}
 
-  async getTeamMembers(orgId: string, page: number, search?: string) {
+  async getTeamMembers(
+    orgId: string,
+    page: number,
+    search?: string,
+    sortBy?: string,
+    sortOrder: 'asc' | 'desc' = 'asc',
+  ) {
     const pipeline: any[] = [
       { $match: { orgId, deletedAt: null } },
       ...userLookupStages,
@@ -62,9 +68,13 @@ export class GetTeamMembersService {
       .exec();
     const total = countResult?.total ?? 0;
 
+    const allowedSortFields = ['name', 'email', 'role', 'createdAt'];
+    const sortField = sortBy && allowedSortFields.includes(sortBy) ? sortBy : 'createdAt';
+    const sortDirection = sortOrder === 'desc' ? -1 : 1;
+
     const skip = (page - 1) * PAGE_SIZE;
     pipeline.push(
-      { $sort: { createdAt: 1 } },
+      { $sort: { [sortField]: sortDirection } },
       { $skip: skip },
       { $limit: PAGE_SIZE },
     );

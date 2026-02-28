@@ -15,12 +15,16 @@ export class GetTeamMembersController {
     @CurrentOrg() orgId: string,
     @Query('page') page?: string,
     @Query('search') search?: string,
+    @Query('sortBy') sortBy?: string,
+    @Query('sortOrder') sortOrder?: string,
   ) {
     const pageNum = Math.max(1, parseInt(page || '1', 10) || 1);
     return this.getTeamMembersService.getTeamMembers(
       orgId,
       pageNum,
       search || undefined,
+      sortBy || undefined,
+      sortOrder === 'desc' ? 'desc' : 'asc',
     );
   }
 }
