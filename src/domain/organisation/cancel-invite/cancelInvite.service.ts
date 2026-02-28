@@ -9,9 +9,9 @@ export class CancelInviteService {
     @InjectModel(TeamMember.name) private teamMemberModel: Model<TeamMemberDocument>,
   ) {}
 
-  async cancelInvite(inviteId: string) {
-    const teamMember = await this.teamMemberModel.findByIdAndUpdate(
-      inviteId,
+  async cancelInvite(orgId: string, email: string) {
+    const teamMember = await this.teamMemberModel.findOneAndUpdate(
+      { email, orgId, role: 'invitee', deletedAt: null },
       { deletedAt: new Date() },
       { new: true }
     ).exec();
