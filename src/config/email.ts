@@ -49,8 +49,8 @@ export async function sendInviteEmail({
   role: string;
   existingUser: boolean;
 }): Promise<void> {
-  const appUrl = "https://app.jakl.au"; // TODO: change this to the frontend URL
-  const signUpEndpoint = "/sign-up"; // TODO: change this to the sign up endpoint
+  const appUrl = process.env.FRONTEND_URL; // TODO: change this to the frontend URL
+  const signUpEndpoint = "/signup"; // TODO: change this to the sign up endpoint
   
   let html: string;
   if (existingUser) {

@@ -6,6 +6,33 @@ import {
   TeamMemberDocument,
 } from '@schemas/teamMember.schema.js';
 
+const PAGE_SIZE = 10;
+
+const userLookupStages = [
+  {
+    $lookup: {
+      from: 'user',
+      localField: 'email',
+      foreignField: 'email',
+      as: 'user',
+    },
+  },
+  { $unwind: { path: '$user', preserveNullAndEmptyArrays: true } },
+  {
+    $addFields: {
+      name: {
+        $cond: {
+          if: { $and: ['$user.firstName', '$user.lastName'] },
+          then: { $concat: ['$user.firstName', ' ', '$user.lastName'] },
+          else: null,
+        },
+      },
+      image: { $ifNull: ['$user.image', null] },
+    },
+  },
+  { $project: { user: 0 } },
+];
+
 @Injectable()
 export class GetTeamMembersService {
   constructor(
@@ -13,34 +40,42 @@ export class GetTeamMembersService {
     private teamMemberModel: Model<TeamMemberDocument>,
   ) {}
 
-  async getTeamMembers(orgId: string) {
-    return this.teamMemberModel
-      .aggregate([
-        { $match: { orgId, deletedAt: null } },
-        {
-          $lookup: {
-            from: 'user',
-            localField: 'email',
-            foreignField: 'email',
-            as: 'user',
-          },
+  async getTeamMembers(orgId: string, page: number, search?: string) {
+    const pipeline: any[] = [
+      { $match: { orgId, deletedAt: null } },
+      ...userLookupStages,
+    ];
+
+    if (search) {
+      const escaped = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const searchRegex = { $regex: escaped, $options: 'i' };
+      pipeline.push({
+        $match: {
+          $or: [{ name: searchRegex }, { email: searchRegex }],
         },
-        { $unwind: { path: '$user', preserveNullAndEmptyArrays: true } },
-        {
-          $addFields: {
-            name: {
-              $cond: {
-                if: { $and: ['$user.firstName', '$user.lastName'] },
-                then: { $concat: ['$user.firstName', ' ', '$user.lastName'] },
-                else: null,
-              },
-            },
-            image: { $ifNull: ['$user.image', null] },
-          },
-        },
-        { $project: { user: 0 } },
-        { $sort: { createdAt: 1 } },
-      ])
+      });
+    }
+
+    const countPipeline = [...pipeline, { $count: 'total' }];
+    const [countResult] = await this.teamMemberModel
+      .aggregate(countPipeline)
       .exec();
+    const total = countResult?.total ?? 0;
+
+    const skip = (page - 1) * PAGE_SIZE;
+    pipeline.push(
+      { $sort: { createdAt: 1 } },
+      { $skip: skip },
+      { $limit: PAGE_SIZE },
+    );
+
+    const members = await this.teamMemberModel.aggregate(pipeline).exec();
+
+    return {
+      members,
+      total,
+      page,
+      totalPages: Math.ceil(total / PAGE_SIZE),
+    };
   }
 }
