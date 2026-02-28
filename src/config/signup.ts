@@ -16,11 +16,20 @@ export async function handleUserSignup(
   let lastAccessedOrg: string | null = null;
 
   if (invites.length > 0) {
+    // Fetch user data for denormalization
+    const user = await db.collection('user').findOne({ _id: new ObjectId(userId) });
+
     // Update invites to link them to the user
     const inviteIds = invites.map(invite => invite._id);
     await db.collection('teamMember').updateMany(
       { _id: { $in: inviteIds } },
-      { $set: { userId: userId, role: 'member', updatedAt: new Date() } }
+      { $set: {
+        userId: userId,
+        role: 'member',
+        name: user?.name ?? null,
+        image: user?.image ?? null,
+        updatedAt: new Date(),
+      } }
     );
 
     // Set lastAccessedOrg to the first invite's org

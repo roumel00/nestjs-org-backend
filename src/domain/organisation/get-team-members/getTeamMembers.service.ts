@@ -8,31 +8,6 @@ import {
 
 const PAGE_SIZE = 10;
 
-const userLookupStages = [
-  {
-    $lookup: {
-      from: 'user',
-      localField: 'email',
-      foreignField: 'email',
-      as: 'user',
-    },
-  },
-  { $unwind: { path: '$user', preserveNullAndEmptyArrays: true } },
-  {
-    $addFields: {
-      name: {
-        $cond: {
-          if: { $and: ['$user.firstName', '$user.lastName'] },
-          then: { $concat: ['$user.firstName', ' ', '$user.lastName'] },
-          else: null,
-        },
-      },
-      image: { $ifNull: ['$user.image', null] },
-    },
-  },
-  { $project: { user: 0 } },
-];
-
 @Injectable()
 export class GetTeamMembersService {
   constructor(
@@ -49,7 +24,6 @@ export class GetTeamMembersService {
   ) {
     const pipeline: any[] = [
       { $match: { orgId, deletedAt: null } },
-      ...userLookupStages,
     ];
 
     if (search) {

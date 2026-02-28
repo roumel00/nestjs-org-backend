@@ -47,10 +47,15 @@ export class InviteService {
 
       let savedTeamMember: TeamMemberDocument | null;
       if (existingInvite) {
-        // Convert invite to member by updating userId and promoting role
+        // Convert invite to member by updating userId, role, and user data
         await this.teamMemberModel.updateOne(
           { _id: existingInvite._id },
-          { $set: { userId: user._id.toString(), role: 'member' } }
+          { $set: {
+            userId: user._id.toString(),
+            role: 'member',
+            name: user.name ?? null,
+            image: user.image ?? null,
+          } }
         ).exec();
         savedTeamMember = await this.teamMemberModel.findById(existingInvite._id).exec();
       } else {
@@ -60,6 +65,8 @@ export class InviteService {
           email,
           userId: user._id.toString(),
           role: 'member',
+          name: user.name ?? null,
+          image: user.image ?? null,
         });
         savedTeamMember = await teamMember.save();
       }

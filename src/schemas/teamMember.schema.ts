@@ -17,6 +17,12 @@ export class TeamMember {
   @Prop({ required: true, default: 'member' })
   role: 'owner' | 'admin' | 'member' | 'invitee';
 
+  @Prop({ type: String, required: false, default: null })
+  name: string | null;
+
+  @Prop({ type: String, required: false, default: null })
+  image: string | null;
+
   @Prop({ type: Date, required: false, default: null })
   deletedAt: Date | null;
 }

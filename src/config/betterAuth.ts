@@ -72,6 +72,18 @@ export const auth = betterAuth({
           user.email,
         );
       }
+
+      if (ctx.path === '/update-user' && ctx.context.session) {
+        const userId = ctx.context.session.user.id;
+        const user = ctx.context.session.user as Record<string, any>;
+        await db.collection('teamMember').updateMany(
+          { userId, deletedAt: null },
+          { $set: {
+            name: user.name ?? null,
+            image: user.image ?? null,
+          } },
+        );
+      }
     }),
   },
 });

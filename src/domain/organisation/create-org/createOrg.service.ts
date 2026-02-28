@@ -5,6 +5,7 @@ import { Organisation, OrganisationDocument } from '@schemas/organisation.schema
 import { TeamMember, TeamMemberDocument } from '@schemas/teamMember.schema.js';
 import { CreateOrgRequest } from './createOrg.dto.js';
 import { auth } from '@config/betterAuth.js';
+import { getDb } from '@config/database.js';
 
 @Injectable()
 export class CreateOrgService {
@@ -40,12 +41,18 @@ export class CreateOrgService {
     const savedOrganisation = await organisation.save();
     const orgId = savedOrganisation.id;
 
+    // Fetch user data for denormalization
+    const db = await getDb();
+    const user = await db.collection('user').findOne({ email: userEmail });
+
     // Create teamMember entry for the owner
     const teamMember = new this.teamMemberModel({
       orgId: orgId,
       email: userEmail,
       userId: userId,
       role: 'owner',
+      name: user?.name ?? null,
+      image: user?.image ?? null,
     });
 
     await teamMember.save();

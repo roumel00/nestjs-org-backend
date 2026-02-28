@@ -6,31 +6,6 @@ import {
   TeamMemberDocument,
 } from '@schemas/teamMember.schema.js';
 
-const userLookupStages = [
-  {
-    $lookup: {
-      from: 'user',
-      localField: 'email',
-      foreignField: 'email',
-      as: 'user',
-    },
-  },
-  { $unwind: { path: '$user', preserveNullAndEmptyArrays: true } },
-  {
-    $addFields: {
-      name: {
-        $cond: {
-          if: { $and: ['$user.firstName', '$user.lastName'] },
-          then: { $concat: ['$user.firstName', ' ', '$user.lastName'] },
-          else: null,
-        },
-      },
-      image: { $ifNull: ['$user.image', null] },
-    },
-  },
-  { $project: { user: 0 } },
-];
-
 @Injectable()
 export class GetTeamOverviewService {
   constructor(
@@ -44,7 +19,6 @@ export class GetTeamOverviewService {
     const [owner] = await this.teamMemberModel
       .aggregate([
         { $match: { ...baseMatch, role: 'owner' } },
-        ...userLookupStages,
       ])
       .exec();
 
@@ -66,7 +40,6 @@ export class GetTeamOverviewService {
       this.teamMemberModel
         .aggregate([
           { $match: { ...baseMatch, role: 'admin' } },
-          ...userLookupStages,
           { $sort: { createdAt: 1 } },
           { $limit: 2 },
         ])
@@ -74,7 +47,6 @@ export class GetTeamOverviewService {
       this.teamMemberModel
         .aggregate([
           { $match: { ...baseMatch, role: 'member' } },
-          ...userLookupStages,
           { $sort: { createdAt: 1 } },
           { $limit: 2 },
         ])
