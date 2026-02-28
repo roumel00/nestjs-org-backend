@@ -76,7 +76,7 @@ export class InviteService {
         existingUser: true,
       });
 
-      return { type: 'teamMember', data: savedTeamMember };
+      return savedTeamMember;
     } else {
       // Check if there's already an invite for this email
       const existingInvite = await this.teamMemberModel.findOne({
@@ -107,7 +107,7 @@ export class InviteService {
         existingUser: false,
       });
 
-      return { type: 'teamMember', data: savedTeamMember };
+      return savedTeamMember;
     }
   }
 }
