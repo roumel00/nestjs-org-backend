@@ -3,6 +3,7 @@ import { CreateOrgModule } from './create-org/createOrg.module.js';
 import { GetOrgsModule } from './get-orgs/getOrgs.module.js';
 import { GetCurrentOrgModule } from './get-current-org/getCurrentOrg.module.js';
 import { SwitchOrgModule } from './switch-org/switchOrg.module.js';
+import { ClearOrgModule } from './clear-org/clearOrg.module.js';
 import { InviteModule } from './invite/invite.module.js';
 import { RemoveUserModule } from './remove-user/removeUser.module.js';
 import { ChangeRoleModule } from './change-role/changeRole.module.js';
@@ -15,6 +16,7 @@ import { GetTeamMembersModule } from './get-team-members/getTeamMembers.module.j
     GetOrgsModule,
     GetCurrentOrgModule,
     SwitchOrgModule,
+    ClearOrgModule,
     InviteModule,
     RemoveUserModule,
     ChangeRoleModule,
