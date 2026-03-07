@@ -28,3 +28,7 @@ export class TeamMember {
 }
 
 export const TeamMemberSchema = SchemaFactory.createForClass(TeamMember);
+
+TeamMemberSchema.index({ orgId: 1, deletedAt: 1 });
+TeamMemberSchema.index({ userId: 1, orgId: 1, deletedAt: 1 });
+TeamMemberSchema.index({ email: 1, orgId: 1, deletedAt: 1 });
