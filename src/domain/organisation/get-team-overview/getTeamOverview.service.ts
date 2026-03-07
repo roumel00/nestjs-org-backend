@@ -5,6 +5,7 @@ import {
   TeamMember,
   TeamMemberDocument,
 } from '@schemas/teamMember.schema.js';
+import { getOwnerQuery, getRoleCountsQuery, getRecentByRoleQuery } from './getTeamOverview.query.js';
 
 @Injectable()
 export class GetTeamOverviewService {
@@ -14,19 +15,12 @@ export class GetTeamOverviewService {
   ) {}
 
   async getTeamOverview(orgId: string) {
-    const baseMatch = { orgId, deletedAt: null };
-
     const [owner] = await this.teamMemberModel
-      .aggregate([
-        { $match: { ...baseMatch, role: 'owner' } },
-      ])
+      .aggregate(getOwnerQuery(orgId))
       .exec();
 
     const countResults = await this.teamMemberModel
-      .aggregate([
-        { $match: { ...baseMatch, role: { $ne: 'owner' } } },
-        { $group: { _id: '$role', count: { $sum: 1 } } },
-      ])
+      .aggregate(getRoleCountsQuery(orgId))
       .exec();
 
     const counts = { admins: 0, members: 0, invitees: 0 };
@@ -38,18 +32,10 @@ export class GetTeamOverviewService {
 
     const [recentAdmins, recentMembers] = await Promise.all([
       this.teamMemberModel
-        .aggregate([
-          { $match: { ...baseMatch, role: 'admin' } },
-          { $sort: { createdAt: 1 } },
-          { $limit: 2 },
-        ])
+        .aggregate(getRecentByRoleQuery(orgId, 'admin', 2))
         .exec(),
       this.teamMemberModel
-        .aggregate([
-          { $match: { ...baseMatch, role: 'member' } },
-          { $sort: { createdAt: 1 } },
-          { $limit: 2 },
-        ])
+        .aggregate(getRecentByRoleQuery(orgId, 'member', 2))
         .exec(),
     ]);
 

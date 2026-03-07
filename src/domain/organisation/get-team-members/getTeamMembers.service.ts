@@ -5,6 +5,7 @@ import {
   TeamMember,
   TeamMemberDocument,
 } from '@schemas/teamMember.schema.js';
+import { getTeamMembersQuery, getTeamMembersCountQuery } from './getTeamMembers.query.js';
 
 const PAGE_SIZE = 10;
 
@@ -22,38 +23,18 @@ export class GetTeamMembersService {
     sortBy?: string,
     sortOrder: 'asc' | 'desc' = 'asc',
   ) {
-    const pipeline: any[] = [
-      { $match: { orgId, deletedAt: null } },
-    ];
-
-    if (search) {
-      const escaped = search.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-      const searchRegex = { $regex: escaped, $options: 'i' };
-      pipeline.push({
-        $match: {
-          $or: [{ name: searchRegex }, { email: searchRegex }],
-        },
-      });
-    }
-
-    const countPipeline = [...pipeline, { $count: 'total' }];
-    const [countResult] = await this.teamMemberModel
-      .aggregate(countPipeline)
-      .exec();
-    const total = countResult?.total ?? 0;
-
     const allowedSortFields = ['name', 'email', 'role', 'createdAt'];
     const sortField = sortBy && allowedSortFields.includes(sortBy) ? sortBy : 'createdAt';
     const sortDirection = sortOrder === 'desc' ? -1 : 1;
 
-    const skip = (page - 1) * PAGE_SIZE;
-    pipeline.push(
-      { $sort: { [sortField]: sortDirection } },
-      { $skip: skip },
-      { $limit: PAGE_SIZE },
-    );
+    const [countResult] = await this.teamMemberModel
+      .aggregate(getTeamMembersCountQuery(orgId, search))
+      .exec();
+    const total = countResult?.total ?? 0;
 
-    const members = await this.teamMemberModel.aggregate(pipeline).exec();
+    const members = await this.teamMemberModel
+      .aggregate(getTeamMembersQuery(orgId, page, PAGE_SIZE, sortField, sortDirection, search))
+      .exec();
 
     return {
       members,
