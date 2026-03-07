@@ -14,34 +14,6 @@ export class Organisation {
   @Prop({ required: true, default: 'UTC' })
   timezone: string;
 
-  @Prop({
-    type: {
-      street: String,
-      city: String,
-      state: String,
-      postalCode: String,
-      country: String,
-    },
-    required: false,
-    default: null,
-  })
-  address: {
-    street: string;
-    city: string;
-    state: string;
-    postalCode: string;
-    country: string;
-  } | null;
-
-  @Prop({ type: String, required: false, default: null })
-  phone: string | null;
-
-  @Prop({ type: String, required: false, default: null })
-  website: string | null;
-
-  @Prop({ type: String, required: false, default: null })
-  billingEmail: string | null;
-
   @Prop({ type: String, required: false, default: null })
   logo: string | null;
 }

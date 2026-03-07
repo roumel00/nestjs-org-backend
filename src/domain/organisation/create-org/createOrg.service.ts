@@ -31,10 +31,6 @@ export class CreateOrgService {
       owner: userId,
       name: createOrgDto.name,
       timezone: createOrgDto.timezone,
-      billingEmail: createOrgDto.email || null,
-      phone: createOrgDto.phone || null,
-      address: createOrgDto.address || null,
-      website: createOrgDto.website || null,
       logo: createOrgDto.logo || null,
     });
 
