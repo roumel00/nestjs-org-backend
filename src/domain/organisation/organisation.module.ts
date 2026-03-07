@@ -10,6 +10,7 @@ import { ChangeRoleModule } from './change-role/changeRole.module.js';
 import { CancelInviteModule } from './cancel-invite/cancelInvite.module.js';
 import { GetTeamMembersModule } from './get-team-members/getTeamMembers.module.js';
 import { GetTeamOverviewModule } from './get-team-overview/getTeamOverview.module.js';
+import { GetOrgDetailsModule } from './get-org-details/getOrgDetails.module.js';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { GetTeamOverviewModule } from './get-team-overview/getTeamOverview.modul
     CancelInviteModule,
     GetTeamMembersModule,
     GetTeamOverviewModule,
+    GetOrgDetailsModule,
   ],
 })
 export class OrganisationModule {}
