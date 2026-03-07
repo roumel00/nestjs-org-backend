@@ -9,3 +9,7 @@ export class ChangeRoleRequest {
   @IsNotEmpty()
   role: string;
 }
+
+export class ChangeRoleResponse {
+  message: string;
+}

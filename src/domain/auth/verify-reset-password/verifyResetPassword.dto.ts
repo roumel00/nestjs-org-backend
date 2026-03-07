@@ -9,3 +9,7 @@ export class VerifyResetPasswordRequest {
   @IsNotEmpty()
   otp: string;
 }
+
+export class VerifyResetPasswordResponse {
+  success: boolean;
+}

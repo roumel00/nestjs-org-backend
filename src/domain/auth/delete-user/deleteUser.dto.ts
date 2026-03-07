@@ -9,3 +9,7 @@ export class DeleteUserRequest {
   @IsNotEmpty()
   secret: string;
 }
+
+export class DeleteUserResponse {
+  success: boolean;
+}

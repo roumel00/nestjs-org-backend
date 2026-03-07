@@ -17,3 +17,7 @@ export class ResetPasswordRequest {
   @IsNotEmpty()
   confirmPassword: string;
 }
+
+export class ResetPasswordResponse {
+  success: boolean;
+}

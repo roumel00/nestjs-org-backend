@@ -5,3 +5,7 @@ export class CancelInviteRequest {
   @IsNotEmpty()
   email: string;
 }
+
+export class CancelInviteResponse {
+  message: string;
+}

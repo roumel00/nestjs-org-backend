@@ -5,3 +5,7 @@ export class SwitchOrgRequest {
   @IsNotEmpty()
   orgId: string;
 }
+
+export class SwitchOrgResponse {
+  orgId: string;
+}

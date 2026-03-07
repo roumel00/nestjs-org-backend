@@ -1,3 +1,5 @@
+export class GetTeamOverviewRequest {}
+
 export class TeamMemberDto {
   id: string;
   orgId: string;

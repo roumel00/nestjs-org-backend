@@ -5,3 +5,7 @@ export class ForgotPasswordRequest {
   @IsNotEmpty()
   email: string;
 }
+
+export class ForgotPasswordResponse {
+  success: boolean;
+}

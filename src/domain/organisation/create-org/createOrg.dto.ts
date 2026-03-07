@@ -13,3 +13,13 @@ export class CreateOrgRequest {
   @IsOptional()
   logo?: string;
 }
+
+export class CreateOrgResponse {
+  _id: string;
+  owner: string;
+  name: string;
+  timezone: string;
+  logo: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+}

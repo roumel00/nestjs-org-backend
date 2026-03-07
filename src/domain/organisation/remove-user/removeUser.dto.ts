@@ -5,3 +5,7 @@ export class RemoveUserRequest {
   @IsNotEmpty()
   userId: string;
 }
+
+export class RemoveUserResponse {
+  message: string;
+}
