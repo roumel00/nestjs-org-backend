@@ -31,7 +31,7 @@ export class GetImageUploadTokensService {
     const tokenPromises = request.files.map(async (file) => {
       const fileExtension = extension(file.mimetype);
       const filename = `${randomUUID()}${fileExtension ? `.${fileExtension}` : '.jpg'}`;
-      const s3Key = `${orgId}/${urlPath}${filename}`;
+      const s3Key = `${urlPath}${filename}`;
 
       const command = new PutObjectCommand({
         Bucket: S3_BUCKET_NAME,

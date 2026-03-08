@@ -3,7 +3,6 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserSession } from '@thallesp/nestjs-better-auth';
 import { Organisation, OrganisationDocument } from '@schemas/organisation.schema.js';
-import { S3_PUBLIC_URL } from '@config/s3.js';
 import { GetOrgDetailsResponse } from './getOrgDetails.dto.js';
 
 type ExtendedUserSession = UserSession & {
@@ -29,7 +28,7 @@ export class GetOrgDetailsService {
 
     return {
       name: organisation.name,
-      logo: organisation.logo ? `${S3_PUBLIC_URL}/${organisation.logo}` : null,
+      logo: organisation.logo ?? null,
       timezone: organisation.timezone,
     };
   }

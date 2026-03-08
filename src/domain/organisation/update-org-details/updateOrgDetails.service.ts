@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Organisation, OrganisationDocument } from '@schemas/organisation.schema.js';
-import { S3_PUBLIC_URL } from '@config/s3.js';
 import { UpdateOrgDetailsRequest, UpdateOrgDetailsResponse } from './updateOrgDetails.dto.js';
 
 @Injectable()
@@ -30,7 +29,7 @@ export class UpdateOrgDetailsService {
 
     return {
       name: organisation.name,
-      logo: organisation.logo ? `${S3_PUBLIC_URL}/${organisation.logo}` : null,
+      logo: organisation.logo ?? null,
       timezone: organisation.timezone,
     };
   }
