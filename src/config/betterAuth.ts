@@ -5,6 +5,8 @@ import { getDb, mongoClient } from './database.js';
 import { createAuthMiddleware } from 'better-auth/api';
 import { sendOtpEmail } from './email.js';
 import { handleUserSignup } from './signup.js';
+import { S3_PUBLIC_URL } from './s3.js';
+import { ObjectId } from 'mongodb';
 
 const db = await getDb();
 const client = mongoClient();
@@ -76,11 +78,23 @@ export const auth = betterAuth({
       if (ctx.path === '/update-user' && ctx.context.session) {
         const userId = ctx.context.session.user.id;
         const user = ctx.context.session.user as Record<string, any>;
+        console.log('update-user hook fired', { userId, name: user.name, image: user.image });
+        const image = user.image
+          ? (user.image.startsWith('http') ? user.image : `${S3_PUBLIC_URL}/${user.image}`)
+          : null;
+
+        if (image && !user.image.startsWith('http')) {
+          await db.collection('user').updateOne(
+            { _id: new ObjectId(userId) },
+            { $set: { image } },
+          );
+        }
+
         await db.collection('teamMember').updateMany(
           { userId, deletedAt: null },
           { $set: {
             name: user.name ?? null,
-            image: user.image ?? null,
+            image,
           } },
         );
       }
