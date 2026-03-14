@@ -1,4 +1,4 @@
-import { IsString, IsNotEmpty, IsIn, IsArray, ValidateNested } from 'class-validator';
+import { IsString, IsNotEmpty, IsIn, IsArray, ValidateNested, IsOptional } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class FileUploadRequest {
@@ -7,7 +7,7 @@ export class FileUploadRequest {
   mimetype: string;
 }
 
-export class GetImageUploadTokensRequest {
+export class GetUploadTokensRequest {
   @IsArray()
   @ValidateNested({ each: true })
   @Type(() => FileUploadRequest)
@@ -15,6 +15,10 @@ export class GetImageUploadTokensRequest {
 
   @IsString()
   @IsNotEmpty()
-  @IsIn(['avatar', 'logo'])
-  fileType: string;
+  @IsIn(['avatar', 'logo', 'general'])
+  fileType: 'avatar' | 'logo' | 'general';
+
+  @IsString()
+  @IsOptional()
+  orgId?: string;
 }

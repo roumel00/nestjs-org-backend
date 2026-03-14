@@ -4,34 +4,39 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { s3Client, S3_BUCKET_NAME } from '@config/s3.js';
 import { randomUUID } from 'crypto';
 import { extension } from 'mime-types';
-import type { GetImageUploadTokensRequest, GetImageUploadTokensResponse, ImageUploadToken } from './getImageUploadTokens.types.js';
+import type { GetUploadTokensRequest, GetUploadTokensResponse } from './getUploadTokens.types.js';
 
 @Injectable()
-export class GetImageUploadTokensService {
-  private getUrlPath(fileType: string): string {
+export class GetUploadTokensService {
+  private getKeyPrefix(fileType: string, orgId?: string): string {
     switch (fileType) {
       case 'avatar':
         return 'avatars/';
+      case 'logo':
+        return 'logos/';
+      case 'general':
+        if (!orgId) {
+          throw new BadRequestException('orgId is required for general file uploads');
+        }
+        return `${orgId}/`;
       default:
         throw new BadRequestException(`Invalid fileType: ${fileType}`);
     }
   }
 
-  async getImageUploadTokens(
-    orgId: string,
-    request: GetImageUploadTokensRequest,
-  ): Promise<GetImageUploadTokensResponse> {
+  async getUploadTokens(
+    request: GetUploadTokensRequest,
+  ): Promise<GetUploadTokensResponse> {
     if (!S3_BUCKET_NAME) {
       throw new BadRequestException('S3 bucket not configured');
     }
 
-    const urlPath = this.getUrlPath(request.fileType);
+    const keyPrefix = this.getKeyPrefix(request.fileType, request.orgId);
 
-    // Generate all presigned URLs in parallel
     const tokenPromises = request.files.map(async (file) => {
       const fileExtension = extension(file.mimetype);
       const filename = `${randomUUID()}${fileExtension ? `.${fileExtension}` : '.jpg'}`;
-      const s3Key = `${urlPath}${filename}`;
+      const s3Key = `${keyPrefix}${filename}`;
 
       const command = new PutObjectCommand({
         Bucket: S3_BUCKET_NAME,
@@ -40,7 +45,7 @@ export class GetImageUploadTokensService {
       });
 
       const presignedUrl = await getSignedUrl(s3Client, command, {
-        expiresIn: 3600, // 1 hour
+        expiresIn: 3600,
       });
 
       return {
