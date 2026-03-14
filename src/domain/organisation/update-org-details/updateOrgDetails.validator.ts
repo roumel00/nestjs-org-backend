@@ -16,9 +16,3 @@ export class UpdateOrgDetailsRequest {
   @IsOptional()
   logo?: string;
 }
-
-export class UpdateOrgDetailsResponse {
-  name: string;
-  logo: string | null;
-  timezone: string;
-}

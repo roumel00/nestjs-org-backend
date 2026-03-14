@@ -1,6 +1,6 @@
-export class GetMeRequest {}
+export type GetMeRequest = Record<string, never>;
 
-export class GetMeResponse {
+export type GetMeResponse = {
   user: {
     id: string;
     email: string;
@@ -10,4 +10,4 @@ export class GetMeResponse {
     createdAt: Date;
     updatedAt: Date;
   };
-}
+};

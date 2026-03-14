@@ -1,6 +1,6 @@
 import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { RemoveUserService } from './removeUser.service.js';
-import { RemoveUserRequest } from './removeUser.dto.js';
+import { RemoveUserRequest } from './removeUser.validator.js';
 import { OrgMemberGuard } from '@common/guards/orgMember.guard.js';
 import { RoleGuard } from '@common/guards/role.guard.js';
 import { RequiredRole } from '@common/decorators/requiredRole.decorator.js';

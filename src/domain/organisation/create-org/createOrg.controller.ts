@@ -2,7 +2,7 @@ import { Controller, Post, Body, Req } from '@nestjs/common';
 import { Session } from '@thallesp/nestjs-better-auth';
 import type { UserSession } from '@thallesp/nestjs-better-auth';
 import { CreateOrgService } from './createOrg.service.js';
-import { CreateOrgRequest } from './createOrg.dto.js';
+import { CreateOrgRequest } from './createOrg.validator.js';
 
 @Controller('organisations')
 export class CreateOrgController {

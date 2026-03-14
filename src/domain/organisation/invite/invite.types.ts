@@ -1,12 +1,8 @@
-import { IsString, IsNotEmpty } from 'class-validator';
-
-export class InviteRequest {
-  @IsString()
-  @IsNotEmpty()
+export type InviteRequest = {
   email: string;
-}
+};
 
-export class InviteResponse {
+export type InviteResponse = {
   _id: string;
   orgId: string;
   email: string;
@@ -16,4 +12,4 @@ export class InviteResponse {
   image: string | null;
   createdAt: Date;
   updatedAt: Date;
-}
+};

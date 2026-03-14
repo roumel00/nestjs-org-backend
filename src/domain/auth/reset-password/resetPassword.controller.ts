@@ -1,7 +1,7 @@
 import { Controller, Post, Body } from '@nestjs/common';
 import { AllowAnonymous } from '@thallesp/nestjs-better-auth';
 import { ResetPasswordService } from './resetPassword.service.js';
-import { ResetPasswordRequest } from './resetPassword.dto.js';
+import { ResetPasswordRequest } from './resetPassword.validator.js';
 
 @Controller('password')
 export class ResetPasswordController {

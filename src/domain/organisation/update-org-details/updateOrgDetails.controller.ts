@@ -1,6 +1,6 @@
 import { Controller, Patch, Body, UseGuards } from '@nestjs/common';
 import { UpdateOrgDetailsService } from './updateOrgDetails.service.js';
-import { UpdateOrgDetailsRequest } from './updateOrgDetails.dto.js';
+import { UpdateOrgDetailsRequest } from './updateOrgDetails.validator.js';
 import { OrgMemberGuard } from '@common/guards/orgMember.guard.js';
 import { RoleGuard } from '@common/guards/role.guard.js';
 import { RequiredRole } from '@common/decorators/requiredRole.decorator.js';

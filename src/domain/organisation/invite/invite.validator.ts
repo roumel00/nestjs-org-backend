@@ -1,11 +1,7 @@
 import { IsString, IsNotEmpty } from 'class-validator';
 
-export class ForgotPasswordRequest {
+export class InviteRequest {
   @IsString()
   @IsNotEmpty()
   email: string;
-}
-
-export class ForgotPasswordResponse {
-  success: boolean;
 }

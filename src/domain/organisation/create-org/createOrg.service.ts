@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Organisation, OrganisationDocument } from '@schemas/organisation.schema.js';
 import { TeamMember, TeamMemberDocument } from '@schemas/teamMember.schema.js';
-import { CreateOrgRequest } from './createOrg.dto.js';
+import type { CreateOrgRequest } from './createOrg.types.js';
 import { auth } from '@config/betterAuth.js';
 import { getDb } from '@config/database.js';
 

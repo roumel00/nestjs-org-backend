@@ -2,7 +2,7 @@ import { Controller, Post, Body } from '@nestjs/common';
 import { OptionalAuth, Session } from '@thallesp/nestjs-better-auth';
 import type { UserSession } from '@thallesp/nestjs-better-auth';
 import { VerifyEmailService } from './verifyEmail.service.js';
-import { VerifyEmailRequest } from './verifyEmail.dto.js';
+import { VerifyEmailRequest } from './verifyEmail.validator.js';
 
 @Controller('verify')
 export class VerifyEmailController {

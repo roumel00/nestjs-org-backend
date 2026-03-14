@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Organisation, OrganisationDocument } from '@schemas/organisation.schema.js';
-import { UpdateOrgDetailsRequest, UpdateOrgDetailsResponse } from './updateOrgDetails.dto.js';
+import type { UpdateOrgDetailsRequest, UpdateOrgDetailsResponse } from './updateOrgDetails.types.js';
 
 @Injectable()
 export class UpdateOrgDetailsService {

@@ -1,6 +1,7 @@
 import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { GetImageUploadTokensService } from './getImageUploadTokens.service.js';
-import { GetImageUploadTokensRequest, GetImageUploadTokensResponse } from './getImageUploadTokens.dto.js';
+import { GetImageUploadTokensRequest } from './getImageUploadTokens.validator.js';
+import type { GetImageUploadTokensResponse } from './getImageUploadTokens.types.js';
 import { OrgMemberGuard } from '@common/guards/orgMember.guard.js';
 import { CurrentOrg } from '@domain/organisation/_decorators/currentOrg.decorator.js';
 

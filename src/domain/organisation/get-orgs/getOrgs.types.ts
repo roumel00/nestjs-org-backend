@@ -1,6 +1,6 @@
-export class GetOrgsRequest {}
+export type GetOrgsRequest = Record<string, never>;
 
-export class OrgSummary {
+export type OrgSummary = {
   orgId: string;
   name: string;
   timezone: string;
@@ -8,8 +8,8 @@ export class OrgSummary {
   logo: string | null;
   role: string;
   memberCount: number;
-}
+};
 
-export class GetOrgsResponse {
+export type GetOrgsResponse = {
   orgs: OrgSummary[];
-}
+};

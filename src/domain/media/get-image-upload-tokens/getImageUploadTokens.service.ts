@@ -4,7 +4,7 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { s3Client, S3_BUCKET_NAME } from '@config/s3.js';
 import { randomUUID } from 'crypto';
 import { extension } from 'mime-types';
-import { GetImageUploadTokensRequest, GetImageUploadTokensResponse, ImageUploadToken } from './getImageUploadTokens.dto.js';
+import type { GetImageUploadTokensRequest, GetImageUploadTokensResponse, ImageUploadToken } from './getImageUploadTokens.types.js';
 
 @Injectable()
 export class GetImageUploadTokensService {

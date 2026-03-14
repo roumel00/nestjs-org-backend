@@ -1,6 +1,6 @@
-export class GetTeamOverviewRequest {}
+export type GetTeamOverviewRequest = Record<string, never>;
 
-export class TeamMemberDto {
+export type TeamMemberDto = {
   id: string;
   orgId: string;
   email: string;
@@ -9,17 +9,17 @@ export class TeamMemberDto {
   image: string | null;
   role: 'owner' | 'admin' | 'member' | 'invitee';
   createdAt: Date;
-}
+};
 
-export class RoleCounts {
+export type RoleCounts = {
   admins: number;
   members: number;
   invitees: number;
-}
+};
 
-export class GetTeamOverviewResponse {
+export type GetTeamOverviewResponse = {
   owner: TeamMemberDto;
   counts: RoleCounts;
   recentAdmins: TeamMemberDto[];
   recentMembers: TeamMemberDto[];
-}
+};

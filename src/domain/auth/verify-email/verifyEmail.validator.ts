@@ -5,7 +5,3 @@ export class VerifyEmailRequest {
   @IsNotEmpty()
   otp: string;
 }
-
-export class VerifyEmailResponse {
-  success: boolean;
-}

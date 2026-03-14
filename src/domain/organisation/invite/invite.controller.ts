@@ -1,7 +1,7 @@
 import { Controller, Post, Body, UseGuards } from '@nestjs/common';
 import { Throttle, minutes } from '@nestjs/throttler';
 import { InviteService } from './invite.service.js';
-import { InviteRequest } from './invite.dto.js';
+import { InviteRequest } from './invite.validator.js';
 import { OrgMemberGuard } from '@common/guards/orgMember.guard.js';
 import { RoleGuard } from '@common/guards/role.guard.js';
 import { UserThrottlerGuard } from '@common/guards/userThrottler.guard.js';

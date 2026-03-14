@@ -4,7 +4,7 @@ import { OrgMemberGuard } from '@common/guards/orgMember.guard.js';
 import { RoleGuard } from '@common/guards/role.guard.js';
 import { RequiredRole } from '@common/decorators/requiredRole.decorator.js';
 import { CurrentOrg } from '../_decorators/currentOrg.decorator.js';
-import { CancelInviteRequest } from './cancelInvite.dto.js';
+import { CancelInviteRequest } from './cancelInvite.validator.js';
 
 @Controller('organisations/team')
 export class CancelInviteController {

@@ -2,7 +2,7 @@ import { Controller, Post, Body, Req } from '@nestjs/common';
 import { Session } from '@thallesp/nestjs-better-auth';
 import type { UserSession } from '@thallesp/nestjs-better-auth';
 import { SwitchOrgService } from './switchOrg.service.js';
-import { SwitchOrgRequest } from './switchOrg.dto.js';
+import { SwitchOrgRequest } from './switchOrg.validator.js';
 
 @Controller('organisations/team')
 export class SwitchOrgController {

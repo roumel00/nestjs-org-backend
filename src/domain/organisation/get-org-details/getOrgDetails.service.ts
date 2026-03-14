@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserSession } from '@thallesp/nestjs-better-auth';
 import { Organisation, OrganisationDocument } from '@schemas/organisation.schema.js';
-import { GetOrgDetailsResponse } from './getOrgDetails.dto.js';
+import type { GetOrgDetailsResponse } from './getOrgDetails.types.js';
 
 type ExtendedUserSession = UserSession & {
   user: UserSession['user'] & {

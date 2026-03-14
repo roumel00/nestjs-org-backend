@@ -18,13 +18,3 @@ export class GetImageUploadTokensRequest {
   @IsIn(['avatar', 'logo'])
   fileType: string;
 }
-
-export class ImageUploadToken {
-  token: string;
-  filename: string;
-  urlPath: string;
-}
-
-export class GetImageUploadTokensResponse {
-  tokens: ImageUploadToken[];
-}

@@ -5,9 +5,3 @@ export class GetLogoUploadTokenRequest {
   @IsNotEmpty()
   mimetype: string;
 }
-
-export class GetLogoUploadTokenResponse {
-  token: string;
-  filename: string;
-  urlPath: string;
-}
