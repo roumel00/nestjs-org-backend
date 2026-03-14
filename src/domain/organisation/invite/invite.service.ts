@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
+import { EventEmitter2 } from '@nestjs/event-emitter';
 import { Organisation, OrganisationDocument } from '@schemas/organisation.schema.js';
 import { TeamMember, TeamMemberDocument } from '@schemas/teamMember.schema.js';
 import { getDb } from '@config/database.js';
@@ -11,9 +12,10 @@ export class InviteService {
   constructor(
     @InjectModel(Organisation.name) private organisationModel: Model<OrganisationDocument>,
     @InjectModel(TeamMember.name) private teamMemberModel: Model<TeamMemberDocument>,
+    private eventEmitter: EventEmitter2,
   ) {}
 
-  async invite(email: string, orgId: string) {
+  async invite(email: string, orgId: string, actor: { id: string; name: string | null }) {
     // Get organisation name for email
     const organisation = await this.organisationModel.findById(orgId).exec();
 
@@ -83,6 +85,13 @@ export class InviteService {
         existingUser: true,
       });
 
+      this.eventEmitter.emit('notification.invite_sent', {
+        orgId,
+        actorId: actor.id,
+        actorName: actor.name,
+        inviteeEmail: email,
+      });
+
       return savedTeamMember;
     } else {
       // Check if there's already an invite for this email
@@ -112,6 +121,13 @@ export class InviteService {
         orgName: organisation.name,
         role: 'invitee',
         existingUser: false,
+      });
+
+      this.eventEmitter.emit('notification.invite_sent', {
+        orgId,
+        actorId: actor.id,
+        actorName: actor.name,
+        inviteeEmail: email,
       });
 
       return savedTeamMember;

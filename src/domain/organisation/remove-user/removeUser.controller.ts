@@ -5,6 +5,7 @@ import { OrgMemberGuard } from '@common/guards/orgMember.guard.js';
 import { RoleGuard } from '@common/guards/role.guard.js';
 import { RequiredRole } from '@common/decorators/requiredRole.decorator.js';
 import { CurrentOrg } from '@domain/organisation/_decorators/currentOrg.decorator.js';
+import { CurrentUser } from '@domain/organisation/_decorators/currentUser.decorator.js';
 
 @Controller('organisations/team')
 export class RemoveUserController {
@@ -13,7 +14,11 @@ export class RemoveUserController {
   @Post('removeUser')
   @UseGuards(OrgMemberGuard, RoleGuard)
   @RequiredRole('admin')
-  async removeUser(@CurrentOrg() orgId: string, @Body() body: RemoveUserRequest) {
-    return this.removeUserService.removeUser(orgId, body.userId);
+  async removeUser(
+    @CurrentOrg() orgId: string,
+    @CurrentUser() user: { id: string; name: string | null },
+    @Body() body: RemoveUserRequest,
+  ) {
+    return this.removeUserService.removeUser(orgId, body.userId, user);
   }
 }

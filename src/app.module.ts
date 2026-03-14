@@ -3,6 +3,7 @@ import { SentryModule } from '@sentry/nestjs/setup';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ThrottlerModule, minutes } from '@nestjs/throttler';
+import { EventEmitterModule } from '@nestjs/event-emitter';
 import { AuthModule } from '@thallesp/nestjs-better-auth';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
@@ -12,6 +13,7 @@ import { auth } from '@config/betterAuth.js';
 import { AuthModule as DomainAuthModule } from '@domain/auth/auth.module.js';
 import { OrganisationModule } from '@domain/organisation/organisation.module.js';
 import { MediaModule } from '@domain/media/media.module.js';
+import { NotificationModule } from '@domain/notification/notification.module.js';
 
 @Module({
   imports: [
@@ -27,6 +29,7 @@ import { MediaModule } from '@domain/media/media.module.js';
       inject: [ConfigService],
     }),
     AuthModule.forRoot({ auth }),
+    EventEmitterModule.forRoot(),
     ThrottlerModule.forRoot([
       { ttl: minutes(5), limit: 1 },
     ]),
@@ -34,6 +37,7 @@ import { MediaModule } from '@domain/media/media.module.js';
     DomainAuthModule,
     OrganisationModule,
     MediaModule,
+    NotificationModule,
   ],
   controllers: [AppController],
   providers: [AppService],

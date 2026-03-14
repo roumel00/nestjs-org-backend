@@ -7,6 +7,7 @@ import { RoleGuard } from '@common/guards/role.guard.js';
 import { UserThrottlerGuard } from '@common/guards/userThrottler.guard.js';
 import { RequiredRole } from '@common/decorators/requiredRole.decorator.js';
 import { CurrentOrg } from '@domain/organisation/_decorators/currentOrg.decorator.js';
+import { CurrentUser } from '@domain/organisation/_decorators/currentUser.decorator.js';
 
 @Controller('organisations/team')
 export class InviteController {
@@ -16,7 +17,11 @@ export class InviteController {
   @UseGuards(OrgMemberGuard, RoleGuard, UserThrottlerGuard)
   @Throttle({ default: { ttl: minutes(60), limit: 50 } })
   @RequiredRole('admin')
-  async invite(@CurrentOrg() orgId: string, @Body() body: InviteRequest) {
-    return this.inviteService.invite(body.email, orgId);
+  async invite(
+    @CurrentOrg() orgId: string,
+    @CurrentUser() user: { id: string; name: string | null },
+    @Body() body: InviteRequest,
+  ) {
+    return this.inviteService.invite(body.email, orgId, user);
   }
 }

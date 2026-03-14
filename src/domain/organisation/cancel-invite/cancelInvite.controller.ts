@@ -4,6 +4,7 @@ import { OrgMemberGuard } from '@common/guards/orgMember.guard.js';
 import { RoleGuard } from '@common/guards/role.guard.js';
 import { RequiredRole } from '@common/decorators/requiredRole.decorator.js';
 import { CurrentOrg } from '../_decorators/currentOrg.decorator.js';
+import { CurrentUser } from '../_decorators/currentUser.decorator.js';
 import { CancelInviteRequest } from './cancelInvite.validator.js';
 
 @Controller('organisations/team')
@@ -13,7 +14,11 @@ export class CancelInviteController {
   @Post('cancelInvite')
   @UseGuards(OrgMemberGuard, RoleGuard)
   @RequiredRole('admin')
-  async cancelInvite(@CurrentOrg() orgId: string, @Body() body: CancelInviteRequest) {
-    return this.cancelInviteService.cancelInvite(orgId, body.email);
+  async cancelInvite(
+    @CurrentOrg() orgId: string,
+    @CurrentUser() user: { id: string; name: string | null },
+    @Body() body: CancelInviteRequest,
+  ) {
+    return this.cancelInviteService.cancelInvite(orgId, body.email, user);
   }
 }
