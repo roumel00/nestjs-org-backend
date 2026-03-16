@@ -6,7 +6,7 @@ export type TeamMemberDocument = TeamMember & Document;
 @Schema({ timestamps: true, collection: 'teamMember' })
 export class TeamMember {
   @Prop({ required: true })
-  orgId: string;
+  workspaceId: string;
 
   @Prop({ required: true })
   email: string;
@@ -29,6 +29,6 @@ export class TeamMember {
 
 export const TeamMemberSchema = SchemaFactory.createForClass(TeamMember);
 
-TeamMemberSchema.index({ orgId: 1, deletedAt: 1 });
-TeamMemberSchema.index({ userId: 1, orgId: 1, deletedAt: 1 });
-TeamMemberSchema.index({ email: 1, orgId: 1, deletedAt: 1 });
+TeamMemberSchema.index({ workspaceId: 1, deletedAt: 1 });
+TeamMemberSchema.index({ userId: 1, workspaceId: 1, deletedAt: 1 });
+TeamMemberSchema.index({ email: 1, workspaceId: 1, deletedAt: 1 });

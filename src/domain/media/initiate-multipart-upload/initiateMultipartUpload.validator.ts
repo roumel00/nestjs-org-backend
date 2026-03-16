@@ -16,5 +16,5 @@ export class InitiateMultipartUploadRequest {
 
   @IsString()
   @IsOptional()
-  orgId?: string;
+  workspaceId?: string;
 }

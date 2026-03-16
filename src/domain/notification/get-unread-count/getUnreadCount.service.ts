@@ -10,10 +10,10 @@ export class GetUnreadCountService {
     @InjectModel(Notification.name) private notificationModel: Model<NotificationDocument>,
   ) {}
 
-  async getUnreadCount(userId: string, orgId: string): Promise<GetUnreadCountResponse> {
+  async getUnreadCount(userId: string, workspaceId: string): Promise<GetUnreadCountResponse> {
     const count = await this.notificationModel.countDocuments({
       recipientId: userId,
-      orgId,
+      workspaceId,
       read: false,
     }).exec();
 

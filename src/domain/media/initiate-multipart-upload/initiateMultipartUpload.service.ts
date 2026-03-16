@@ -13,22 +13,22 @@ const PART_SIZE = 10 * 1024 * 1024; // 10 MB
 
 @Injectable()
 export class InitiateMultipartUploadService {
-  private getKeyPrefix(fileType: string, orgId?: string): string {
+  private getKeyPrefix(fileType: string, workspaceId?: string): string {
     switch (fileType) {
       case 'avatar':
         return 'avatars/';
       case 'logo':
         return 'logos/';
       case 'video':
-        if (!orgId) {
-          throw new BadRequestException('orgId is required for video uploads');
+        if (!workspaceId) {
+          throw new BadRequestException('workspaceId is required for video uploads');
         }
-        return `${orgId}/videos/`;
+        return `${workspaceId}/videos/`;
       case 'general':
-        if (!orgId) {
-          throw new BadRequestException('orgId is required for general file uploads');
+        if (!workspaceId) {
+          throw new BadRequestException('workspaceId is required for general file uploads');
         }
-        return `${orgId}/`;
+        return `${workspaceId}/`;
       default:
         throw new BadRequestException(`Invalid fileType: ${fileType}`);
     }
@@ -41,7 +41,7 @@ export class InitiateMultipartUploadService {
       throw new BadRequestException('S3 bucket not configured');
     }
 
-    const keyPrefix = this.getKeyPrefix(request.fileType, request.orgId);
+    const keyPrefix = this.getKeyPrefix(request.fileType, request.workspaceId);
     const fileExtension = extension(request.mimetype);
     const filename = `${randomUUID()}${fileExtension ? `.${fileExtension}` : ''}`;
     const key = `${keyPrefix}${filename}`;

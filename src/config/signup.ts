@@ -13,7 +13,7 @@ export async function handleUserSignup(
     deletedAt: null,
   }).toArray();
 
-  let lastAccessedOrg: string | null = null;
+  let lastAccessedWorkspace: string | null = null;
 
   if (invites.length > 0) {
     // Fetch user data for denormalization
@@ -32,17 +32,17 @@ export async function handleUserSignup(
       } }
     );
 
-    // Set lastAccessedOrg to the first invite's org
-    lastAccessedOrg = invites[0].orgId.toString();
-    console.log(`[Signup] Set lastAccessedOrg to: ${lastAccessedOrg}`);
+    // Set lastAccessedWorkspaceto the first invite's workspace
+    lastAccessedWorkspace= invites[0].workspaceId.toString();
+    console.log(`[Signup] Set lastAccessedWorkspaceto: ${lastAccessedWorkspace}`);
   }
 
-  // Update user with lastAccessedOrg (may be null if no invites)
+  // Update user with lastAccessedWorkspace(may be null if no invites)
   await db.collection('user').updateOne(
     { _id: new ObjectId(userId) },
-    { $set: { lastAccessedOrg: lastAccessedOrg } }
+    { $set: { lastAccessedWorkspace: lastAccessedWorkspace} }
   );
 
-  return lastAccessedOrg;
+  return lastAccessedWorkspace;
 }
 

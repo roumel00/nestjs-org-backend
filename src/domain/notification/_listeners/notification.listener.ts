@@ -21,7 +21,7 @@ export class NotificationListener {
 
   @OnEvent('notification.invite_sent')
   async handleInviteSent(event: InviteSentEvent) {
-    const recipients = await this.getAdminAndOwnerRecipients(event.orgId, event.actorId);
+    const recipients = await this.getAdminAndOwnerRecipients(event.workspaceId, event.actorId);
 
     const context: NotificationContext = {
       type: 'invite_sent',
@@ -31,12 +31,12 @@ export class NotificationListener {
       inviteeEmail: event.inviteeEmail,
     };
 
-    await this.createNotifications(event.orgId, recipients, context);
+    await this.createNotifications(event.workspaceId, recipients, context);
   }
 
   @OnEvent('notification.invite_cancelled')
   async handleInviteCancelled(event: InviteCancelledEvent) {
-    const recipients = await this.getAdminAndOwnerRecipients(event.orgId, event.actorId);
+    const recipients = await this.getAdminAndOwnerRecipients(event.workspaceId, event.actorId);
 
     const context: NotificationContext = {
       type: 'invite_cancelled',
@@ -46,7 +46,7 @@ export class NotificationListener {
       inviteeEmail: event.inviteeEmail,
     };
 
-    await this.createNotifications(event.orgId, recipients, context);
+    await this.createNotifications(event.workspaceId, recipients, context);
   }
 
   @OnEvent('notification.role_changed')
@@ -60,28 +60,28 @@ export class NotificationListener {
       previousRole: event.previousRole,
     };
 
-    await this.createNotifications(event.orgId, [event.targetId], context);
+    await this.createNotifications(event.workspaceId, [event.targetId], context);
   }
 
   @OnEvent('notification.member_removed')
   async handleMemberRemoved(event: MemberRemovedEvent) {
-    const recipients = await this.getAdminAndOwnerRecipients(event.orgId, event.actorId);
+    const recipients = await this.getAdminAndOwnerRecipients(event.workspaceId, event.actorId);
 
     const context: NotificationContext = {
       type: 'member_removed',
-      title: `${event.actorName ?? 'A team member'} removed ${event.targetName ?? event.targetEmail} from the organisation`,
+      title: `${event.actorName ?? 'A team member'} removed ${event.targetName ?? event.targetEmail} from the workspace`,
       actorId: event.actorId,
       actorName: event.actorName,
       targetName: event.targetName,
       targetEmail: event.targetEmail,
     };
 
-    await this.createNotifications(event.orgId, recipients, context);
+    await this.createNotifications(event.workspaceId, recipients, context);
   }
 
-  private async getAdminAndOwnerRecipients(orgId: string, excludeUserId: string): Promise<string[]> {
+  private async getAdminAndOwnerRecipients(workspaceId: string, excludeUserId: string): Promise<string[]> {
     const teamMembers = await this.teamMemberModel.find({
-      orgId,
+      workspaceId,
       role: { $in: ['admin', 'owner'] },
       deletedAt: null,
       userId: { $ne: null, $nin: [excludeUserId] },
@@ -93,14 +93,14 @@ export class NotificationListener {
   }
 
   private async createNotifications(
-    orgId: string,
+    workspaceId: string,
     recipientIds: string[],
     context: NotificationContext,
   ) {
     if (recipientIds.length === 0) return;
 
     const notifications = recipientIds.map((recipientId) => ({
-      orgId,
+      workspaceId,
       recipientId,
       context,
       read: false,

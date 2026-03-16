@@ -10,9 +10,9 @@ export class MarkAllReadService {
     @InjectModel(Notification.name) private notificationModel: Model<NotificationDocument>,
   ) {}
 
-  async markAllRead(userId: string, orgId: string): Promise<MarkAllReadResponse> {
+  async markAllRead(userId: string, workspaceId: string): Promise<MarkAllReadResponse> {
     await this.notificationModel.updateMany(
-      { recipientId: userId, orgId, read: false },
+      { recipientId: userId, workspaceId, read: false },
       { $set: { read: true } },
     ).exec();
 

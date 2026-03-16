@@ -1,19 +1,19 @@
 export type InviteSentEvent = {
-  orgId: string;
+  workspaceId: string;
   actorId: string;
   actorName: string;
   inviteeEmail: string;
 };
 
 export type InviteCancelledEvent = {
-  orgId: string;
+  workspaceId: string;
   actorId: string;
   actorName: string;
   inviteeEmail: string;
 };
 
 export type RoleChangedEvent = {
-  orgId: string;
+  workspaceId: string;
   actorId: string;
   actorName: string;
   targetId: string;
@@ -23,7 +23,7 @@ export type RoleChangedEvent = {
 };
 
 export type MemberRemovedEvent = {
-  orgId: string;
+  workspaceId: string;
   actorId: string;
   actorName: string;
   targetName: string;

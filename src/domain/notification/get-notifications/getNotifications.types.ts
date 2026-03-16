@@ -1,4 +1,5 @@
 import type { NotificationContext } from '../_types/notificationContext.types.js';
+import type { NotificationDocument } from '@schemas/notification.schema.js';
 
 export type GetNotificationsRequest = {
   page?: number;
@@ -7,7 +8,7 @@ export type GetNotificationsRequest = {
 
 export type NotificationDto = {
   _id: string;
-  orgId: string;
+  workspaceId: string;
   recipientId: string;
   context: NotificationContext;
   read: boolean;
@@ -15,7 +16,7 @@ export type NotificationDto = {
 };
 
 export type GetNotificationsResponse = {
-  notifications: NotificationDto[];
+  notifications: NotificationDocument[];
   total: number;
   page: number;
   totalPages: number;

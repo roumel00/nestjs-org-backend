@@ -1,6 +1,6 @@
 # NestJS Express Backend
 
-A production-ready NestJS Express backend featuring organisation-based multi-tenancy, authentication, and comprehensive access control.
+A production-ready NestJS Express backend featuring workspace-based multi-tenancy, authentication, and comprehensive access control.
 
 ## Tech Stack
 
@@ -15,19 +15,19 @@ A production-ready NestJS Express backend featuring organisation-based multi-ten
 
 ### 🔐 Authentication & Authorization
 
-- **Organisation-based authentication** - Multi-tenant architecture with organisation isolation
+- **Workspace-based authentication** - Multi-tenant architecture with workspace isolation
 - **Role-based access control (RBAC)** - Support for `admin` and `owner` roles with granular permissions
-- **Organisational invites** - Invite users to organisations with specific roles
-- **Automatic organisation context** - `@CurrentOrg()` decorator automatically extracts the current organisation from the user session
-- **Custom signup logic** - Handles organisation creation and user setup during registration
+- **Workspace invites** - Invite users to workspaces with specific roles
+- **Automatic workspace context** - `@CurrentWorkspace()` decorator automatically extracts the current workspace from the user session
+- **Custom signup logic** - Handles workspace creation and user setup during registration
 - **Email verification** - OTP-based email verification using Better Auth's email OTP plugin
 - **Password management** - Forgot password, reset password with OTP verification
-- **User deletion** - Secure user account deletion functionality via a dev-only route for cleaning up test users/orgs
+- **User deletion** - Secure user account deletion functionality via a dev-only route for cleaning up test users/workspaces
 
 ### 🛡️ Security & Guards
 
 - **API route throttling** - Configurable rate limiting using `@nestjs/throttler`, typically involving emails
-- **Organisation membership checks** - `OrgMemberGuard` ensures users can only access their organisation's resources
+- **Workspace membership checks** - `WorkspaceMemberGuard` ensures users can only access their workspace's resources
 - **Role guards** - `RoleGuard` with `@RequiredRole()` decorator for role-based route protection
 - **Development guards** - `DevelopmentGuard` restricts certain routes to development environment only
 - **User throttling** - Per-user rate limiting for sensitive operations
@@ -35,16 +35,16 @@ A production-ready NestJS Express backend featuring organisation-based multi-ten
 ### 📧 Email Features
 
 - **OTP email delivery** - Automated OTP emails for email verification and password reset
-- **Organisation invites** - Email invitations for both existing and new users
+- **Workspace invites** - Email invitations for both existing and new users
 - **Resend integration** - Professional email templates via Resend API
 
-### 🏢 Organisation Management
+### 🏢 Workspace Management
 
-- **Multi-organisation support** - Users can belong to multiple organisations
-- **Organisation switching** - Switch between organisations with automatic context updates
-- **Last accessed organisation** - Tracks and restores user's last accessed organisation
-- **Organisation member management** - Add, remove, and manage organisation members
-- **Role management** - Change user roles within organisations (admin/owner)
+- **Multi-workspace support** - Users can belong to multiple workspaces
+- **Workspace switching** - Switch between workspaces with automatic context updates
+- **Last accessed workspace** - Tracks and restores user's last accessed workspace
+- **Workspace member management** - Add, remove, and manage workspace members
+- **Role management** - Change user roles within workspaces (admin/owner)
 
 ### 🎯 Developer Experience
 
@@ -53,7 +53,7 @@ A production-ready NestJS Express backend featuring organisation-based multi-ten
 - **CORS configuration** - Configurable CORS with credential support
 - **Environment-based configuration** - Uses `@nestjs/config` for environment variables
 - **Modular architecture** - Well-organised modules for maintainability
-- **Custom decorators** - Reusable decorators for common patterns (`@CurrentOrg`, `@RequiredRole`)
+- **Custom decorators** - Reusable decorators for common patterns (`@CurrentWorkspace`, `@RequiredRole`)
 
 ## Project Structure
 
@@ -63,11 +63,11 @@ src/
 │   ├── decorators/     # Custom decorators (e.g., @RequiredRole)
 │   └── guards/         # Authentication and authorization guards
 ├── config/             # Configuration files (auth, database, email, signup)
-├── organisation/       # Organisation management module
-│   ├── decorators/     # @CurrentOrg decorator
-│   ├── invite/         # Organisation invite functionality
+├── workspace/          # Workspace management module
+│   ├── decorators/     # @CurrentWorkspace decorator
+│   ├── invite/         # Workspace invite functionality
 │   ├── schemas/        # Mongoose schemas
-│   └── userInOrg/      # User-organisation relationship management
+│   └── userInWorkspace/ # User-workspace relationship management
 └── user/               # User management module
     ├── password/       # Password reset functionality
     └── verify/         # Email verification
@@ -135,13 +135,13 @@ All endpoints are prefixed with `/api`.
 ### Authentication
 - Better Auth handles authentication endpoints (sign-up, sign-in, sign-out, etc.)
 
-### Organisations
-- `POST /api/organisations/invite` - Invite user to organisation (requires admin role)
-- `DELETE /api/organisations/invite/cancel/:inviteId` - Cancel invite (requires admin role)
-- `GET /api/organisations/user` - Get user's organisations
-- `POST /api/organisations/user/switch` - Switch to a different organisation
-- `POST /api/organisations/user/removeUser` - Remove user from organisation (requires admin role)
-- `POST /api/organisations/user/changeRole` - Change user role (requires owner role)
+### Workspaces
+- `POST /api/workspaces/invite` - Invite user to workspace (requires admin role)
+- `DELETE /api/workspaces/invite/cancel/:inviteId` - Cancel invite (requires admin role)
+- `GET /api/workspaces/user` - Get user's workspaces
+- `POST /api/workspaces/user/switch` - Switch to a different workspace
+- `POST /api/workspaces/user/removeUser` - Remove user from workspace (requires admin role)
+- `POST /api/workspaces/user/changeRole` - Change user role (requires owner role)
 
 ### User Management
 - `GET /api/user/me` - Get current user
@@ -156,14 +156,14 @@ All endpoints are prefixed with `/api`.
 
 ## Usage Examples
 
-### Using the @CurrentOrg Decorator
+### Using the @CurrentWorkspace Decorator
 
 ```typescript
-@Get('my-org-data')
-@UseGuards(OrgMemberGuard)
-async getOrgData(@CurrentOrg() orgId: string) {
-  // orgId is automatically extracted from session.user.lastAccessedOrg
-  return this.service.getDataForOrg(orgId);
+@Get('my-workspace-data')
+@UseGuards(WorkspaceMemberGuard)
+async getWorkspaceData(@CurrentWorkspace() workspaceId: string) {
+  // workspaceId is automatically extracted from session.user.lastAccessedWorkspace
+  return this.service.getDataForWorkspace(workspaceId);
 }
 ```
 
@@ -171,9 +171,9 @@ async getOrgData(@CurrentOrg() orgId: string) {
 
 ```typescript
 @Post('admin-only')
-@UseGuards(OrgMemberGuard, RoleGuard)
+@UseGuards(WorkspaceMemberGuard, RoleGuard)
 @RequiredRole('admin')
-async adminOnlyRoute(@CurrentOrg() orgId: string) {
+async adminOnlyRoute(@CurrentWorkspace() workspaceId: string) {
   // Only admins can access this route
 }
 ```

@@ -1,19 +1,19 @@
 import { Controller, Patch, UseGuards } from '@nestjs/common';
 import { MarkAllReadService } from './markAllRead.service.js';
-import { OrgMemberGuard } from '@common/guards/orgMember.guard.js';
-import { CurrentOrg } from '@domain/organisation/_decorators/currentOrg.decorator.js';
-import { CurrentUser } from '@domain/organisation/_decorators/currentUser.decorator.js';
+import { WorkspaceMemberGuard } from '@common/guards/workspaceMember.guard.js';
+import { CurrentWorkspace} from '@domain/workspace/_decorators/currentWorkspace.decorator.js';
+import { CurrentUser } from '@domain/workspace/_decorators/currentUser.decorator.js';
 
 @Controller('notifications')
 export class MarkAllReadController {
   constructor(private readonly markAllReadService: MarkAllReadService) {}
 
   @Patch('read-all')
-  @UseGuards(OrgMemberGuard)
+  @UseGuards(WorkspaceMemberGuard)
   async markAllRead(
-    @CurrentOrg() orgId: string,
+    @CurrentWorkspace() workspaceId: string,
     @CurrentUser() user: { id: string; name: string | null },
   ) {
-    return this.markAllReadService.markAllRead(user.id, orgId);
+    return this.markAllReadService.markAllRead(user.id, workspaceId);
   }
 }

@@ -20,5 +20,5 @@ export class GetUploadTokensRequest {
 
   @IsString()
   @IsOptional()
-  orgId?: string;
+  workspaceId?: string;
 }

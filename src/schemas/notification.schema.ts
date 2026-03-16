@@ -6,7 +6,7 @@ export type NotificationDocument = Notification & Document;
 @Schema({ timestamps: true, collection: 'notification' })
 export class Notification {
   @Prop({ required: true })
-  orgId: string;
+  workspaceId: string;
 
   @Prop({ required: true })
   recipientId: string;
@@ -16,8 +16,10 @@ export class Notification {
 
   @Prop({ required: true, default: false })
   read: boolean;
+
+  createdAt: Date;
 }
 
 export const NotificationSchema = SchemaFactory.createForClass(Notification);
 
-NotificationSchema.index({ recipientId: 1, orgId: 1, read: 1, createdAt: -1 });
+NotificationSchema.index({ recipientId: 1, workspaceId: 1, read: 1, createdAt: -1 });

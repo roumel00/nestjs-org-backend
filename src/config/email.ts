@@ -40,12 +40,12 @@ export async function sendOtpEmail({
 
 export async function sendInviteEmail({
   email,
-  orgName,
+  workspaceName,
   role,
   existingUser,
 }: {
   email: string;
-  orgName: string;
+  workspaceName: string;
   role: string;
   existingUser: boolean;
 }): Promise<void> {
@@ -54,12 +54,12 @@ export async function sendInviteEmail({
   
   let html: string;
   if (existingUser) {
-    // Existing user - tell them to switch to the new org
+    // Existing user - tell them to switch to the new workspace
     html = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="margin-bottom: 8px;">You've been invited!</h2>
-        <p>You've been invited to join <strong>${orgName}</strong> as a <strong>${role}</strong>.</p>
-        <p>You can now switch to this organisation in your account settings.</p>
+        <p>You've been invited to join <strong>${workspaceName}</strong> as a <strong>${role}</strong>.</p>
+        <p>You can now switch to this workspace in your account settings.</p>
         <p style="margin-top: 20px;">
           <a href="${appUrl}" 
              style="background-color: #007bff; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block;">
@@ -76,7 +76,7 @@ export async function sendInviteEmail({
     html = `
       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="margin-bottom: 8px;">You've been invited!</h2>
-        <p>You've been invited to join <strong>${orgName}</strong> as a <strong>${role}</strong>.</p>
+        <p>You've been invited to join <strong>${workspaceName}</strong> as a <strong>${role}</strong>.</p>
         <p>Sign up to accept this invitation and get started.</p>
         <p style="margin-top: 20px;">
           <a href="${appUrl}${signUpEndpoint}" 
@@ -94,7 +94,7 @@ export async function sendInviteEmail({
   const { error } = await resend.emails.send({
     from: 'noreply@' + (process.env.EMAIL_DOMAIN ?? 'notifications.jakl.au'),
     to: email,
-    subject: `You've been invited to join ${orgName}`,
+    subject: `You've been invited to join ${workspaceName}`,
     html,
   });
 

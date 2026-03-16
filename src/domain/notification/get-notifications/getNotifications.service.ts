@@ -12,11 +12,11 @@ export class GetNotificationsService {
 
   async getNotifications(
     userId: string,
-    orgId: string,
+    workspaceId: string,
     page = 1,
     limit = 20,
   ): Promise<GetNotificationsResponse> {
-    const filter = { recipientId: userId, orgId };
+    const filter = { recipientId: userId, workspaceId };
     const skip = (page - 1) * limit;
 
     const [notifications, total] = await Promise.all([
