@@ -3,7 +3,7 @@ import { Session } from '@thallesp/nestjs-better-auth';
 import type { UserSession } from '@thallesp/nestjs-better-auth';
 import { ClearWorkspaceService } from './clearWorkspace.service.js';
 
-@Controller('workspaces/team')
+@Controller('workspace/team')
 export class ClearWorkspaceController {
   constructor(private readonly clearWorkspaceService: ClearWorkspaceService) {}
 

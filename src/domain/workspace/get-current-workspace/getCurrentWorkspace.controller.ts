@@ -3,11 +3,11 @@ import { Session } from '@thallesp/nestjs-better-auth';
 import type { UserSession } from '@thallesp/nestjs-better-auth';
 import { GetCurrentWorkspaceService } from './getCurrentWorkspace.service.js';
 
-@Controller('workspaces/team')
+@Controller('workspace/team/current')
 export class GetCurrentWorkspaceController {
   constructor(private readonly getCurrentWorkspaceService: GetCurrentWorkspaceService) {}
 
-  @Get('currentWorkspace')
+  @Get('fetch')
   getCurrentWorkspaces(@Session() session: UserSession) {
     return this.getCurrentWorkspaceService.getCurrentWorkspace(session);
   }

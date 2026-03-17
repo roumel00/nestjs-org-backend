@@ -3,7 +3,7 @@ import { AllowAnonymous } from '@thallesp/nestjs-better-auth';
 import { VerifyResetPasswordService } from './verifyResetPassword.service.js';
 import { VerifyResetPasswordRequest } from './verifyResetPassword.validator.js';
 
-@Controller('password')
+@Controller('auth/password')
 export class VerifyResetPasswordController {
   constructor(private readonly verifyResetPasswordService: VerifyResetPasswordService) {}
 

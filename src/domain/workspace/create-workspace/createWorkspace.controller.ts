@@ -4,11 +4,11 @@ import type { UserSession } from '@thallesp/nestjs-better-auth';
 import { CreateWorkspaceService } from './createWorkspace.service.js';
 import { CreateWorkspaceRequest } from './createWorkspace.validator.js';
 
-@Controller('workspaces')
+@Controller('workspace')
 export class CreateWorkspaceController {
   constructor(private readonly createWorkspaceService: CreateWorkspaceService) {}
 
-  @Post()
+  @Post('create')
   async createWorkspace(
     @Session() session: UserSession,
     @Body() body: CreateWorkspaceRequest,

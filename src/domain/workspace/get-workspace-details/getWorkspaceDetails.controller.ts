@@ -3,11 +3,11 @@ import { Session } from '@thallesp/nestjs-better-auth';
 import type { UserSession } from '@thallesp/nestjs-better-auth';
 import { GetWorkspaceDetailsService } from './getWorkspaceDetails.service.js';
 
-@Controller('workspaces')
+@Controller('workspace/details')
 export class GetWorkspaceDetailsController {
   constructor(private readonly getWorkspaceDetailsService: GetWorkspaceDetailsService) {}
 
-  @Get('details')
+  @Get('fetch')
   getWorkspaceDetails(@Session() session: UserSession) {
     return this.getWorkspaceDetailsService.getWorkspaceDetails(session);
   }

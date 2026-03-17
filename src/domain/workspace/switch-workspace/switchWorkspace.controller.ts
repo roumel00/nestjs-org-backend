@@ -4,7 +4,7 @@ import type { UserSession } from '@thallesp/nestjs-better-auth';
 import { SwitchWorkspaceService } from './switchWorkspace.service.js';
 import { SwitchWorkspaceRequest } from './switchWorkspace.validator.js';
 
-@Controller('workspaces/team')
+@Controller('workspace/team')
 export class SwitchWorkspaceController {
   constructor(private readonly switchWorkspaceService: SwitchWorkspaceService) {}
 

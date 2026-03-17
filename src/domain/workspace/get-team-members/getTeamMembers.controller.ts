@@ -3,13 +3,13 @@ import { GetTeamMembersService } from './getTeamMembers.service.js';
 import { WorkspaceMemberGuard } from '@common/guards/workspaceMember.guard.js';
 import { CurrentWorkspace} from '@domain/workspace/_decorators/currentWorkspace.decorator.js';
 
-@Controller('workspaces/team')
+@Controller('workspace/team')
 export class GetTeamMembersController {
   constructor(
     private readonly getTeamMembersService: GetTeamMembersService,
   ) {}
 
-  @Get()
+  @Get('fetch')
   @UseGuards(WorkspaceMemberGuard)
   async getTeamMembers(
     @CurrentWorkspace() workspaceId: string,

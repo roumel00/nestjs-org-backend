@@ -5,7 +5,7 @@ import { Throttle, minutes } from '@nestjs/throttler';
 import { ResendVerificationService } from './resendVerification.service.js';
 import { UserThrottlerGuard } from '@common/guards/userThrottler.guard.js';
 
-@Controller('verify')
+@Controller('auth/email')
 export class ResendVerificationController {
   constructor(private readonly resendVerificationService: ResendVerificationService) {}
 

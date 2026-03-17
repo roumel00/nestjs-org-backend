@@ -8,7 +8,7 @@ import { CurrentUser } from '@domain/workspace/_decorators/currentUser.decorator
 export class GetUnreadCountController {
   constructor(private readonly getUnreadCountService: GetUnreadCountService) {}
 
-  @Get('unread-count')
+  @Get('unread-count/fetch')
   @UseGuards(WorkspaceMemberGuard)
   async getUnreadCount(
     @CurrentWorkspace() workspaceId: string,

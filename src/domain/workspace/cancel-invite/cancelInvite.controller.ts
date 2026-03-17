@@ -7,11 +7,11 @@ import { CurrentWorkspace} from '../_decorators/currentWorkspace.decorator.js';
 import { CurrentUser } from '../_decorators/currentUser.decorator.js';
 import { CancelInviteRequest } from './cancelInvite.validator.js';
 
-@Controller('workspaces/team')
+@Controller('workspace/team')
 export class CancelInviteController {
   constructor(private readonly cancelInviteService: CancelInviteService) {}
 
-  @Post('cancelInvite')
+  @Post('cancel-invite')
   @UseGuards(WorkspaceMemberGuard, RoleGuard)
   @RequiredRole('admin')
   async cancelInvite(

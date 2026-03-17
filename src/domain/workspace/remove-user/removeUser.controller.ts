@@ -7,11 +7,11 @@ import { RequiredRole } from '@common/decorators/requiredRole.decorator.js';
 import { CurrentWorkspace} from '@domain/workspace/_decorators/currentWorkspace.decorator.js';
 import { CurrentUser } from '@domain/workspace/_decorators/currentUser.decorator.js';
 
-@Controller('workspaces/team')
+@Controller('workspace/team')
 export class RemoveUserController {
   constructor(private readonly removeUserService: RemoveUserService) {}
 
-  @Post('removeUser')
+  @Post('remove-user')
   @UseGuards(WorkspaceMemberGuard, RoleGuard)
   @RequiredRole('admin')
   async removeUser(

@@ -5,7 +5,7 @@ import { ForgotPasswordService } from './forgotPassword.service.js';
 import { ForgotPasswordRequest } from './forgotPassword.validator.js';
 import { PasswordThrottlerGuard } from '@common/guards/passwordThrottler.guard.js';
 
-@Controller('password')
+@Controller('auth/password')
 export class ForgotPasswordController {
   constructor(private readonly forgotPasswordService: ForgotPasswordService) {}
 
