@@ -64,6 +64,15 @@ export const auth = betterAuth({
   ],
 
   hooks: {
+    before: createAuthMiddleware(async (ctx) => {
+      if (ctx.path === '/update-user' && ctx.body?.name) {
+        const parts = (ctx.body.name as string).trim().split(/\s+/);
+        const firstName = parts[0];
+        const lastName = parts.slice(1).join(' ') || '';
+        ctx.body.firstName = firstName;
+        ctx.body.lastName = lastName;
+      }
+    }),
     after: createAuthMiddleware(async (ctx) => {
       if (ctx.path.startsWith('/sign-up') && ctx.context.newSession) {
         const userId = ctx.context.newSession.user.id;
