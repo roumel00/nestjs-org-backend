@@ -9,7 +9,7 @@ export class GetTeamMembersController {
     private readonly getTeamMembersService: GetTeamMembersService,
   ) {}
 
-  @Get('fetch')
+  @Get('fetch-members')
   @UseGuards(WorkspaceMemberGuard)
   async getTeamMembers(
     @CurrentWorkspace() workspaceId: string,

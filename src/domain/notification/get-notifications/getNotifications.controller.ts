@@ -8,7 +8,7 @@ import { CurrentUser } from '@domain/workspace/_decorators/currentUser.decorator
 export class GetNotificationsController {
   constructor(private readonly getNotificationsService: GetNotificationsService) {}
 
-  @Get('fetch')
+  @Get('fetch-notifications')
   @UseGuards(WorkspaceMemberGuard)
   async getNotifications(
     @CurrentWorkspace() workspaceId: string,

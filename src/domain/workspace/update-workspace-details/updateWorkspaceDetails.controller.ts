@@ -6,11 +6,11 @@ import { RoleGuard } from '@common/guards/role.guard.js';
 import { RequiredRole } from '@common/decorators/requiredRole.decorator.js';
 import { CurrentWorkspace} from '@domain/workspace/_decorators/currentWorkspace.decorator.js';
 
-@Controller('workspace/details')
+@Controller('workspace')
 export class UpdateWorkspaceDetailsController {
   constructor(private readonly updateWorkspaceDetailsService: UpdateWorkspaceDetailsService) {}
 
-  @Patch('update')
+  @Patch('update-details')
   @UseGuards(WorkspaceMemberGuard, RoleGuard)
   @RequiredRole('owner')
   async updateWorkspaceDetails(@CurrentWorkspace() workspaceId: string, @Body() body: UpdateWorkspaceDetailsRequest) {

@@ -7,7 +7,7 @@ import { GetWorkspacesService } from './getWorkspaces.service.js';
 export class GetWorkspacesController {
   constructor(private readonly getWorkspacesService: GetWorkspacesService) {}
 
-  @Get('fetch')
+  @Get('fetch-workspaces')
   getMyWorkspaces(@Session() session: UserSession) {
     return this.getWorkspacesService.getUserWorkspaces(session.user.id);
   }

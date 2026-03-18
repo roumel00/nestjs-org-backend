@@ -8,7 +8,7 @@ import { CreateWorkspaceRequest } from './createWorkspace.validator.js';
 export class CreateWorkspaceController {
   constructor(private readonly createWorkspaceService: CreateWorkspaceService) {}
 
-  @Post('create')
+  @Post('create-workspace')
   async createWorkspace(
     @Session() session: UserSession,
     @Body() body: CreateWorkspaceRequest,
