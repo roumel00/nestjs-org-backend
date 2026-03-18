@@ -29,7 +29,9 @@ export const auth = betterAuth({
       firstName: { type: 'string', required: true, input: true },
       lastName: { type: 'string', required: true, input: true },
       image: { type: 'string', required: false, input: true },
-      lastAccessedWorkspace: { type: 'string', required: false }
+      lastAccessedWorkspace: { type: 'string', required: false },
+      themeWeb: { type: 'string', required: false, defaultValue: 'light' },
+      themeMobile: { type: 'string', required: false, defaultValue: 'light' }
     },
     deleteUser: { 
       enabled: true

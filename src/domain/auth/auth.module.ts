@@ -4,6 +4,7 @@ import { VerifyResetPasswordModule } from './verify-reset-password/verifyResetPa
 import { ResetPasswordModule } from './reset-password/resetPassword.module.js';
 import { VerifyEmailModule } from './verify-email/verifyEmail.module.js';
 import { ResendVerificationModule } from './resend-verification/resendVerification.module.js';
+import { ToggleThemeModule } from './toggle-theme/toggleTheme.module.js';
 
 @Module({
   imports: [
@@ -12,6 +13,7 @@ import { ResendVerificationModule } from './resend-verification/resendVerificati
     ResetPasswordModule,
     VerifyEmailModule,
     ResendVerificationModule,
+    ToggleThemeModule,
   ],
 })
 export class AuthModule {}
