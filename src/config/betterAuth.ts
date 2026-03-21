@@ -1,6 +1,7 @@
 import { betterAuth } from 'better-auth';
 import { mongodbAdapter } from 'better-auth/adapters/mongodb';
 import { emailOTP } from 'better-auth/plugins';
+import { expo } from '@better-auth/expo';
 import { getDb, mongoClient } from './database.js';
 import { createAuthMiddleware } from 'better-auth/api';
 import { sendOtpEmail } from './email.js';
@@ -12,7 +13,7 @@ const client = mongoClient();
 export const auth = betterAuth({
   secret: process.env.BETTER_AUTH_SECRET,
   baseURL: process.env.BASE_URL,
-  trustedOrigins: process.env.CORS_ORIGIN?.split(',') || ['http://localhost:3050', 'http://localhost:3000'],
+  trustedOrigins: process.env.CORS_ORIGIN?.split(',') || ['http://localhost:3050', 'http://localhost:3000', 'ma://', 'exp+ma://'],
 
   database: mongodbAdapter(db, { client: client }),
 
@@ -60,7 +61,8 @@ export const auth = betterAuth({
       sendVerificationOnSignUp: true,
       otpLength: 6,
       expiresIn: 300,
-    }) 
+    }), 
+    expo(),
   ],
 
   hooks: {
